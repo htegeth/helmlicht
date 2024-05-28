@@ -15,7 +15,8 @@ boolean lightsOn =false;
 unsigned long startTime = 0;
 unsigned int currentCode=0;
 
-unsigned int taste1 = 32936;
+const unsigned int taste1 = 32936;
+const unsigned int taste2 = 32932;
 
 byte started = false;
 
@@ -98,21 +99,23 @@ void loop() {
     digitalWrite(LED_PIN, HIGH);
     delay(200);
     digitalWrite(LED_PIN, LOW);
-    delay(200);
-
-      
+    delay(200);      
     //blinkZiffer(code);     
     delay(2000);  
   }
 
-  if (currentCode == taste1){
-    blinkControll(5,50);
-    blinkControll(2,200);
-    blinkControll(5,50);
-    blinkControll(2,200);
+  delay (1000);
+  switch (currentCode)
+  {
+    case taste1:   
+      blinkControll(1,200);
+      break;
+    case taste2:
+      blinkControll(2,200);
+      break;
+    default:
+      break;
   }
-  
-
     
 }
 
