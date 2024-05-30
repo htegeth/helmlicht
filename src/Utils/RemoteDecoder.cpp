@@ -23,9 +23,7 @@ RCSwitch mySwitch = RCSwitch();
 
 
 
-
 void setup() {
-  
   pinMode(LED_PIN, OUTPUT);
   pinMode(CONTROL_LED, OUTPUT);
   cli();                            
@@ -47,38 +45,48 @@ void blinkControll(int times, int  unsigned frequence)
 
 }
 
-
-
 ISR(PCINT_VECTOR)
 { 
    mySwitch.handleInterrupt();
 }
 
+void blinkZiffer(unsigned int zahl){
+  int ziffer=0;
+  while (zahl != 0) {
+    delay(1000);
+    blinkControll(3,50);
+    delay(1000);
+    ziffer = zahl % 10;    
+    blinkControll(ziffer,300);
+    zahl /= 10;
+    delay(500);
+  }
+}
+
+void blinkBinar(unsigned int zahl){
+  for (int i = 0; i < sizeof(int) * 8; ++i) {
+        int bit = (zahl >> i) & 1;
+        if (bit==0){
+          blinkControll(1,100);          
+        }else{
+          blinkControll(2,100);   
+        }
+        delay(2000);
+    }
+}
 
 void loop() {
   if (mySwitch.available()) {    
     unsigned int code= mySwitch.getReceivedValue();    
     currentCode = code;  
     digitalWrite(LED_PIN, HIGH);
-    delay(100);
-    digitalWrite(LED_PIN, LOW);      
-    delay(100);
-    mySwitch.resetAvailable();  
+    delay(200);
+    digitalWrite(LED_PIN, LOW);
+    delay(200);      
+    blinkZiffer(code);     
+    delay(2000);  
   }
 
-  delay (1000);
-  switch (currentCode)
-  {
-    case taste1:   
-      blinkControll(1,200);
-      break;
-    case taste2:
-      blinkControll(2,200);
-      break;
-    default:
-      break;
-  }
-    
 }
 
    
