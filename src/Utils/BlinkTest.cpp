@@ -3,6 +3,13 @@
 
 void setup() {
     pinMode(PB4, OUTPUT);
+
+    cli(); // Disable interrupts
+    CLKPR = (1<<CLKPCE); // Prescaler enable
+    CLKPR = 0x00; // Clock division factor
+    sei(); // Enable interrupts
+
+  
 }
 
 void loop(){
