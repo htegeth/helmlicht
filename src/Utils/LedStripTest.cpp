@@ -1,3 +1,4 @@
+// testet ob der LED Streifen auch funktioniert. 
 #include <Arduino.h>
 #include <FastLED.h>
 
@@ -10,14 +11,14 @@
 CRGB leds[NUM_LEDS];
 
 void setup() { 
-    // Uncomment/edit one of the following lines for your leds arrangement.
-    // ## Clockless types ##
     FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);  // GRB ordering is assumed
+    
+/*  nicht nötig wenn lfuse = 0xE2 gesetzt ist 
     cli(); // Disable interrupts
     CLKPR = (1<<CLKPCE); // Prescaler enable
     CLKPR = 0x00; // Clock division factor
     sei(); // Enable interrupts
-    // FastLED.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUM_LEDS);  // GRB ordering is typical
+  */  
     
 }
 
