@@ -1,9 +1,7 @@
 #include <BlinkMuster.h>
 
 BlinkMuster::BlinkMuster()
-{
-    
-}
+{ }
 
 void BlinkMuster::setLeds(CRGB* leds)
 {
@@ -50,3 +48,54 @@ void BlinkMuster::blinkRight()
     }
     delay(blinkDelayMain);
 }
+
+void BlinkMuster::runleft()
+{
+  leds[0] = CRGB::CRGB::Red;
+  FastLED.show();
+  boolean repeat= true;
+  while (repeat) {
+    for (int i =0; i < numberLeds;i++ ){
+        int luma= leds[i].getLuma();
+        if (luma > 0){
+          leds[i] = CRGB::CRGB::Black;
+          if( i != numberLeds-1){              
+              leds[i+1] = CRGB::CRGB::Red;
+          }else{
+            repeat = false;
+          }
+          FastLED.show();
+          break;
+        }
+                
+    }
+    delay(runDelayTime);  
+  }
+}
+
+void BlinkMuster::runright()
+{
+    leds[numberLeds-1] = CRGB::CRGB::Red;
+    FastLED.show();
+    boolean repeat= true;
+    while (repeat) {
+    for (int i =numberLeds-1; i >= 0 ;i-- ){
+        int luma= leds[i].getLuma();
+        if (luma > 0){          
+            if( i > 0){              
+                leds[i-1] = CRGB::CRGB::Red;
+            }else{
+            repeat = false;
+            }
+            FastLED.show();
+            delay(20);
+            leds[i] = CRGB::CRGB::Black;
+            FastLED.show();
+            break;
+        }
+                
+    }
+    delay(runDelayTime);  
+    }
+}
+

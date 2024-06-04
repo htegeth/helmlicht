@@ -3,6 +3,8 @@
 class BlinkMuster
 {
     private:
+        const int defaultDelay = 50;
+        const int runDelayTime = defaultDelay;
         int numberLeds;
         CRGB* leds;
         int ledFragment = 0;
@@ -19,5 +21,15 @@ class BlinkMuster
        
         void blinkRight();
         void blinkLeft();
+        void runleft();
+        void runright();
+
+        void wawa(){  
+            runleft();            
+            runright();                 
+        };
+
+                    
+
 
 };

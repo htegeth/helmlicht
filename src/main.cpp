@@ -2,34 +2,38 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <atRcRwitch.h>
-#include <BlinkMuster.h>
+#include <FastLED.h>
+#include "BlinkMuster.h"
 
 #define INTERRUPT_PIN PCINT1  // Interupt ist PB1 gemäß dem Schaltplan
-#define INT_PIN PB1           // Interrupt-Pin nach Wahl: PB1 (wie PCINT1) - Pin 6
-#define LED_PIN PB3           // PB4 - Pin 3
-#define CONTROL_LED PB4
+#define INT_PIN PB1           // Interrupt-Pin nach Wahl: PB1 (wie PCINT1) 
+#define LED_PIN PB3           // LED für das Feedback für enfnagene Nachrichten
+#define CONTROL_LED PB2       // LED um anzuzeigen welcher Knopf der Fernbedienung gedrückt wurde
 #define PCINT_VECTOR PCINT0_vect      // This step is not necessary - it's a naming thing for clarit
+#define NUM_LEDS 21
+#define DATA_PIN 4
 
-
-const int anzahlLeds=20;
 boolean volatile irFired=false;
 boolean lightsOn =false;
 unsigned long startTime = 0;
 unsigned int currentCode=0;
-CRGB leds[anzahlLeds];
 
+//Fernbedienungscodes. Ausgelesen aus dem RemoteDecoder
 const unsigned int taste1 = 32936;
 const unsigned int taste2 = 32932;
 
 byte started = false;
 RCSwitch mySwitch = RCSwitch();
-BlinkMuster blinkMuster = BlinkMuster(leds,anzahlLeds);
-
+CRGB leds[NUM_LEDS];
+BlinkMuster blinker = BlinkMuster();
 
 
 
 void setup() {
-  
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+  blinker.setLeds(leds);
+  blinker.setNumberLeds(NUM_LEDS);
+  blinker.init();
   pinMode(LED_PIN, OUTPUT);
   pinMode(CONTROL_LED, OUTPUT);
   cli();                            
@@ -48,16 +52,12 @@ void blinkControll(int times, int  unsigned frequence)
     digitalWrite(CONTROL_LED, LOW);
     delay(frequence);
   }
-
 }
-
-
 
 ISR(PCINT_VECTOR)
 { 
    mySwitch.handleInterrupt();
 }
-
 
 void loop() {
   if (mySwitch.available()) {    
@@ -70,24 +70,21 @@ void loop() {
     mySwitch.resetAvailable();  
   }
 
-  delay (1000);
+  //delay (500);
+  
   switch (currentCode)
   {
     case taste1:   
-      blinkControll(1,200);
+      //blinkControll(2,50);
+      blinker.blinkLeft();
       break;
     case taste2:
-      blinkControll(2,200);
+      //blinkControll(4,50);
+      blinker.blinkRight();
       break;
     default:
+      blinker.wawa();
       break;
   }
     
 }
-
-   
-   
-  
-  
-
-
