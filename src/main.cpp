@@ -9,6 +9,7 @@
 #define INT_PIN PB1           // Interrupt-Pin nach Wahl: PB1 (wie PCINT1) 
 #define LED_PIN PB3           // LED für das Feedback für enfnagene Nachrichten
 #define CONTROL_LED PB2       // LED um anzuzeigen welcher Knopf der Fernbedienung gedrückt wurde
+#define TONE_PIN 0
 #define PCINT_VECTOR PCINT0_vect      // This step is not necessary - it's a naming thing for clarit
 #define NUM_LEDS 21
 #define DATA_PIN 4
@@ -29,7 +30,21 @@ BlinkMuster blinker = BlinkMuster();
 
 
 
+void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds)
+{ 
+  int  x;
+  long delayAmount = (long)(1000000 / frequencyInHertz);
+  long loopTime = (long)((timeInMilliseconds * 1000) / (delayAmount * 2));
+  for (x = 0; x < loopTime; x++) {
+    digitalWrite(speakerPin, HIGH);
+    delayMicroseconds(delayAmount);
+    digitalWrite(speakerPin, LOW);
+    delayMicroseconds(delayAmount);
+  }
+}
+
 void setup() {
+  pinMode(TONE_PIN, OUTPUT);
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
   blinker.setLeds(leds);
   blinker.setNumberLeds(NUM_LEDS);
@@ -75,11 +90,13 @@ void loop() {
   switch (currentCode)
   {
     case taste1:   
-      //blinkControll(2,50);
+      //blinkControll(2,50);      
+      tone(TONE_PIN,150,200);
       blinker.blinkLeft();
       break;
     case taste2:
       //blinkControll(4,50);
+      tone(TONE_PIN, 50,200);
       blinker.blinkRight();
       break;
     default:
