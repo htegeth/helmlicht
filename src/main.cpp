@@ -71,6 +71,7 @@ void blinkControll(int times, int  unsigned frequence)
 
 ISR(PCINT_VECTOR)
 { 
+    //blinkControll(1,50);
    mySwitch.handleInterrupt();
 }
 

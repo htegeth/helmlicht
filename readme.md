@@ -1,7 +1,11 @@
+
 # Helmlicht
 Das Helmlicht ist für Fahrradhelme von Abus Modell Hud-Y gedacht. Es passt in die dafür vorgesehene Einsparung in der das orginal rücklich eingesteckt wird. 
 Es werden für die Beleutung WS2812B eingesetzt die über einen ATTiny angsteuert werden. Zusätzlich wird eine Fernbedienung unterstützt, um eine Blickfunktion 
 im Lichtstreifen zu integrieren.
+
+## Schritt für Schritt
+1. Fuse des ATtiny richtig setzen über PlatformIO/Project Tasks/ Attiny_Helmlich/Platform/Set Fuses
 
 # Utils
 ## BlickTest

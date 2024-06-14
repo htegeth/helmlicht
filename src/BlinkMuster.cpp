@@ -87,8 +87,7 @@ void BlinkMuster::runright()
             }else{
             repeat = false;
             }
-            FastLED.show();
-            delay(20);
+            FastLED.show();           
             leds[i] = CRGB::CRGB::Black;
             FastLED.show();
             break;

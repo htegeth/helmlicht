@@ -13,13 +13,6 @@ CRGB leds[NUM_LEDS];
 void setup() { 
     FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);  // GRB ordering is assumed
     
-/*  nicht nötig wenn lfuse = 0xE2 gesetzt ist 
-    cli(); // Disable interrupts
-    CLKPR = (1<<CLKPCE); // Prescaler enable
-    CLKPR = 0x00; // Clock division factor
-    sei(); // Enable interrupts
-  */  
-    
 }
 
 void loop() { 
