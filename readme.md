@@ -23,9 +23,13 @@ HIer werden Probleme angesprochen, dass der delay nicht rictig fuktioniert weil 
 
 Auf dieser Seite gibt es einen Taktrechner: https://www.engbedded.com/fusecalc/
 
+## RX Nodule
+Der XY-MK-5V ist das Standardmodul für 433Mhz Funkübertragung meist im Set mit dem FS1000A, Der Sender und der Empfäger sind relative Prinitive Konstruktionen, bei der ein Spule in Schwingung versetzt wird und diese Schwingung beim RX Modul verstärkt an dem Datenpin angelegt wird.
+Leider hat der XY-MK-5V, ein Pendlerempfaenger, eine sehr geringe Reichweite. Ausserdem scheint er kein sauberes Signal zu liefern, so dass ein Sender in unmittelbarer Entfernung zum Empfänger stehen muss. Desweiteren braucht der Empfänger zwingen mehr als 3V Spannung, um zu funktionieren. Besser sind hier Superheterodyne Empfänger die auch bei 3V saubere Ergebisse erzielen. Hervorrangend. der RXB8, dieser hat eine sehr kleine Bauform und arbeitet zuverlässig schon bei 3V. 
+
 ## Funktionserklärung rc-switch
 ### ATtiny 
-Für den ATtiny wurden extra der Boolean RCSwitchDisableReceiving auf true gesetzt weil angeblich udivmodhi4 fehlt. Allerdings ist dies mit der ATtinycore lib auch nicht nötig. Es funktioniert also auch ohne. Aller dings muss die einbettung in das Interupt Magement geändert werden da der Arduino Befehl attachInterrupt hier nicht funktioniert. Also diese Zeile auskommentieren und RCSwitchDisableReceiving ebenso
+Für den ATtiny wurden extra der Boolean RCSwitchDisableReceiving auf true gesetzt weil angeblich udivmodhi4 fehlt. Allerdings ist dies mit der ATtinycore lib auch nicht nötig. Es funktioniert also auch ohne. Aller dings muss die einbettung in das Interupt Magement geändert werden da der Arduino Befehl attachInterrupt hier nicht funktioniert. Also diese Zeile auskommentieren und RCSwitchDisableReceiving ebenso der Aufruf interruptChange(), da diesem beim ATtiny nicht gibt.
 
 ### Signalverarbeitung
 Die Herausfoderung bei der Signalverarbeitung ist es zuerst die Störungen herauszufiltern und dann das Signal korrekt zu interpretieren. Dies wird wie folgt gemacht:
@@ -35,6 +39,6 @@ Die Herausfoderung bei der Signalverarbeitung ist es zuerst die Störungen herau
   - Wenn der Abstand seit dem letzten Aufruf länger als 4300 micros ist (eine Signallücke) dann
     - wird der Cursor für das Array der Signal zurückgesetzt (egal was vorher war)
     - wenn das eine Signallücke ist (am Anfang oder zwischen den Signalen) und diese schon das zweite mal auftritt
-      - dann könnte eine ganze Signalkette vorliegen, diese wird an receiveProtocol weitergegeben zum analysieren
+      - dann könnte eine ganze Signalkette vorliegen, diese wird an receiveProtocol weitergegeben zum analysiere
     
 
