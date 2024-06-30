@@ -5,7 +5,7 @@ Es werden für die Beleutung WS2812B eingesetzt die über einen ATTiny angsteuer
 im Lichtstreifen zu integrieren.
 
 ## Schritt für Schritt
-1. Fuse des ATtiny richtig setzen über PlatformIO/Project Tasks/ Attiny_Helmlich/Platform/Set Fuses
+1. Fuse des ATtiny richtig setzen über PlatformIO/Project Tasks/Attiny_Helmlich/Platform/Set Fuses
 
 # Utils
 ## BlickTest
@@ -24,8 +24,10 @@ HIer werden Probleme angesprochen, dass der delay nicht rictig fuktioniert weil 
 Auf dieser Seite gibt es einen Taktrechner: https://www.engbedded.com/fusecalc/
 
 ## RX Nodule
-Der XY-MK-5V ist das Standardmodul für 433Mhz Funkübertragung meist im Set mit dem FS1000A, Der Sender und der Empfäger sind relative Prinitive Konstruktionen, bei der ein Spule in Schwingung versetzt wird und diese Schwingung beim RX Modul verstärkt an dem Datenpin angelegt wird.
-Leider hat der XY-MK-5V, ein Pendlerempfaenger, eine sehr geringe Reichweite. Ausserdem scheint er kein sauberes Signal zu liefern, so dass ein Sender in unmittelbarer Entfernung zum Empfänger stehen muss. Desweiteren braucht der Empfänger zwingen mehr als 3V Spannung, um zu funktionieren. Besser sind hier Superheterodyne Empfänger die auch bei 3V saubere Ergebisse erzielen. Hervorrangend. der RXB8, dieser hat eine sehr kleine Bauform und arbeitet zuverlässig schon bei 3V. 
+Der XY-MK-5V ist das Standardmodul für 433Mhz Funkübertragung meist im Set mit dem FS1000A, Der Sender und der Empfäger sind relative primitive Konstruktionen, bei der eine Spule in Schwingung versetzt wird und diese Schwingung beim RX Modul verstärkt an dem Datenpin angelegt wird.
+Der XY-MK-5V ist ein Pendlerempfaenger, mit einer sehr geringen Reichweite. Ausserdem scheint er kein sauberes Signal zu liefern, so dass ein Sender in unmittelbarer Entfernung zum Empfänger stehen muss. Desweiteren braucht der Empfänger zwingen mehr als 3V Spannung, um zu funktionieren. 
+Besser sind hier Superheterodyne Empfänger die auch bei 3V saubere Ergebisse erzielen. Hervorrangend. der RXB14, dieser hat eine sehr kleine Bauform und arbeitet zuverlässig schon bei 3V und kann damit auch mit einer Knopfzelle betrieben werden. Der Verbrauch würde dabei bei ca. 6.88 mW liegen. Bei einer Kapazität einer Cr2032 von 0,22 Ah wären ein Betrieb von 95 Stunden also ca 4 Tagen Dauerbetrieb möglich.
+
 
 ## Funktionserklärung rc-switch
 ### ATtiny 

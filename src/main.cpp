@@ -20,7 +20,7 @@
 #define CONTROL_LED PB2       // LED um anzuzeigen welcher Knopf der Fernbedienung gedrückt wurde
 #define TONE_PIN 0
 #define PCINT_VECTOR PCINT0_vect      // This step is not necessary - it's a naming thing for clarit
-#define NUM_LEDS 21
+#define NUM_LEDS 23
 #define DATA_PIN 4
 
 boolean volatile irFired=false;
