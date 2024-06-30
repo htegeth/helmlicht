@@ -28,8 +28,8 @@ void BlinkMuster::blinkLeft()
     FastLED.clear();
     FastLED.show();
     delay(blinkDelayMain);
-    for (int i = 15; i < 21 ;i++ ){
-        leds[i] = CRGB::CRGB::CRGB::Yellow;
+    for (int i = 15; i < numberLeds ;i++ ){
+        leds[i] = CRGB::CRGB::CRGB::Orange;
         FastLED.show();
         delay(blinkDelaySub);  
     }
@@ -41,8 +41,8 @@ void BlinkMuster::blinkRight()
     FastLED.clear();
     FastLED.show();
     delay(blinkDelayMain);
-    for (int i = rightBegin-1; i >= 0 ;i-- ){
-        leds[i] = CRGB::CRGB::CRGB::Yellow;
+    for (int i = rightBegin-2; i >= 0 ;i-- ){
+        leds[i] = CRGB::CRGB::CRGB::Orange;
         FastLED.show();
         delay(blinkDelaySub);  
     }
