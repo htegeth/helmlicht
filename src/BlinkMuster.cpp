@@ -1,4 +1,5 @@
 #include <BlinkMuster.h>
+#include "Control.h"
 
 BlinkMuster::BlinkMuster()
 { }
@@ -30,7 +31,8 @@ void BlinkMuster::blinkLeft()
     delay(blinkDelayMain);
     for (int i = numberLeds-ledFragment; i < numberLeds ;i++ ){
         leds[i] = CRGB::CRGB::CRGB::Orange;
-        FastLED.show();
+        if(Control::hasCodeChanged()) return;
+        FastLED.show();        
         delay(blinkDelaySub);  
     }
     delay(blinkDelayMain);
@@ -43,19 +45,21 @@ void BlinkMuster::blinkRight()
     delay(blinkDelayMain);
     for (int i = rightBegin-1; i >= 0 ;i-- ){
         leds[i] = CRGB::CRGB::CRGB::Orange;
+        if(Control::hasCodeChanged()) return;
         FastLED.show();
         delay(blinkDelaySub);  
     }
     delay(blinkDelayMain);
 }
 
-void BlinkMuster::runleft()
+bool BlinkMuster::runleft()
 {
   leds[0] = CRGB::CRGB::Red;
   FastLED.show();
   boolean repeat= true;
   while (repeat) {
     for (int i =0; i < numberLeds;i++ ){
+        if(Control::hasCodeChanged()) return false;
         int luma= leds[i].getLuma();
         if (luma > 0){
           leds[i] = CRGB::CRGB::Black;
@@ -71,15 +75,17 @@ void BlinkMuster::runleft()
     }
     delay(runDelayTime);  
   }
+  return true;
 }
 
-void BlinkMuster::runright()
+bool BlinkMuster::runright()
 {
     leds[numberLeds-1] = CRGB::CRGB::Red;
     FastLED.show();
     boolean repeat= true;
     while (repeat) {
     for (int i =numberLeds-1; i >= 0 ;i-- ){
+        if(Control::hasCodeChanged()) return false;
         int luma= leds[i].getLuma();
         if (luma > 0){          
             if( i > 0){              
@@ -96,5 +102,9 @@ void BlinkMuster::runright()
     }
     delay(runDelayTime);  
     }
+    return true;
 }
 
+void BlinkMuster::wawa(){
+    if (runleft()) runright();  
+}

@@ -82,8 +82,7 @@ void blinkControll(int times, int  unsigned frequence)
 
 ISR(PCINT_VECTOR)
 {     
-   mySwitch.handleInterrupt();
-   Control::buttonPressedAction=true;
+   mySwitch.handleInterrupt();   
 }
 
 

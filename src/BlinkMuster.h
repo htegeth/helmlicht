@@ -19,17 +19,21 @@ class BlinkMuster
         void setNumberLeds(int numberLeds);
         void init();
        
-        void blinkRight();
+       
+        void blinkRight();       
         void blinkLeft();
-        void runleft();
-        void runright();
 
-        void wawa(){  
-            runleft();            
-            runright();                 
-        };
+        /**
+         * liefert false wenn die methode unterbrochen wurde
+        */
+        bool runleft();
+        /**
+         * liefert false wenn die methode unterbrochen wurde
+        */
+        bool runright();
 
-                    
+        void wawa();
 
+                
 
 };
