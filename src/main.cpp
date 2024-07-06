@@ -13,6 +13,7 @@
 #include <atRcRwitch.h>
 #include <FastLED.h>
 #include "BlinkMuster.h"
+#include "Control.h"
 
 #define INTERRUPT_PIN PCINT1  // Interupt ist PB1 gemäß dem Schaltplan
 #define INT_PIN PB1           // Interrupt-Pin nach Wahl: PB1 (wie PCINT1) 
@@ -23,7 +24,8 @@
 #define NUM_LEDS 23
 #define DATA_PIN 4
 
-boolean volatile irFired=false;
+
+
 boolean lightsOn =false;
 unsigned long startTime = 0;
 unsigned int currentCode=0;
@@ -79,10 +81,11 @@ void blinkControll(int times, int  unsigned frequence)
 }
 
 ISR(PCINT_VECTOR)
-{ 
-    //blinkControll(1,50);
+{     
    mySwitch.handleInterrupt();
+   Control::buttonPressedAction=true;
 }
+
 
 void loop() {
   if (mySwitch.available()) {    
@@ -92,7 +95,8 @@ void loop() {
     delay(100);
     digitalWrite(LED_PIN, LOW);      
     delay(100);
-    mySwitch.resetAvailable();  
+    mySwitch.resetAvailable();
+    
   }
 
   //delay (500);

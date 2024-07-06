@@ -33,6 +33,7 @@
 */
 
 #include "atRcRwitch.h"
+#include "Control.h"
 
 #ifdef RaspberryPi
     // PROGMEM and _P functions are for AVR based microprocessors,
@@ -659,6 +660,8 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
     }
 
     if (changeCount > 7) {    // ignore very short transmissions: no device sends them, so this must be noise
+        //The code has changed so the flag will change
+        Control::setCode(code);        
         RCSwitch::nReceivedValue = code;
         RCSwitch::nReceivedBitlength = (changeCount - 1) / 2;
         RCSwitch::nReceivedDelay = delay;
