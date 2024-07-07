@@ -1,4 +1,4 @@
-//Wird nicht wirklich benötigt da der tiny auch tone() richtig umsetzt, allerdings nur auf PWM fähigen PINS
+//Wird nicht wirklich benötigt da der tiny auch tone() aus der Aurdiono Bibliothek richtig umsetzt, allerdings nur auf PWM fähigen PINS
 #include <Arduino.h>
 
 #define TONE_PIN 0
