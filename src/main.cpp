@@ -25,12 +25,13 @@
 #define DATA_PIN 4
 
 boolean lightsOn = false;
-unsigned long startTime = 0;
-unsigned int currentCode = 0;
 
-// Fernbedienungscodes. Ausgelesen aus dem RemoteDecoder
-const unsigned int taste1 = 32936;
-const unsigned int taste2 = 32932;
+unsigned int currentCodeMain = 0;
+
+// Fernbedienungscodes. Ausgelesen über RCSwitch.getReceivedValue()
+// Seltsam, wenn currentCode long ist funktioniert die unterbrechung nicht
+const unsigned int taste1 = (int) 753832L;
+const unsigned int taste2 = (int) 753828L;
 
 byte started = false;
 RCSwitch mySwitch = RCSwitch();
@@ -88,16 +89,11 @@ void loop()
 {
   if (mySwitch.available())
   {
-    unsigned int code = mySwitch.getReceivedValue();
-    currentCode = code;
-    digitalWrite(LED_PIN, HIGH);
-    delay(100);
-    digitalWrite(LED_PIN, LOW);
-    delay(100);
+    currentCodeMain = mySwitch.getReceivedValue();
     mySwitch.resetAvailable();
   }
 
-  switch (currentCode)
+  switch (currentCodeMain)
   {
   case taste1:
     tone(TONE_PIN, 150, 200);

@@ -12,11 +12,11 @@
 
 boolean lightsOn = false;
 unsigned long startTime = 0;
-unsigned int currentCode = 0;
+unsigned long currentCode = 0;
 
-// Fernbedienungscodes. Ausgelesen aus dem RemoteDecoder
-const unsigned int taste1 = 32936;
-const unsigned int taste2 = 32932;
+// Fernbedienungscodes. Ausgelesen über RCSwitch.getReceivedValue()
+const unsigned long taste1 = 753832;
+const unsigned long taste2 = 753828;
 
 byte started = false;
 RCSwitch mySwitch = RCSwitch();
@@ -55,7 +55,7 @@ void loop()
 {
   if (mySwitch.available())
   {
-    unsigned int code = mySwitch.getReceivedValue();
+    unsigned long code = mySwitch.getReceivedValue();
     currentCode = code;
     mySwitch.resetAvailable();
   }
