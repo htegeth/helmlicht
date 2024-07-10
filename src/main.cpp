@@ -26,12 +26,13 @@
 
 boolean lightsOn = false;
 
+// Seltsam, wenn currentCode long ist, liefert  Control.hasCodeChanged() zu oft true. Bei typ int ist das kein Problem
 unsigned int currentCodeMain = 0;
-
 // Fernbedienungscodes. Ausgelesen über RCSwitch.getReceivedValue()
-// Seltsam, wenn currentCode long ist funktioniert die unterbrechung nicht
-const unsigned int taste1 = (int) 753832L;
-const unsigned int taste2 = (int) 753828L;
+const unsigned long taste1 = 753832;
+const unsigned long taste2 = 753828;
+const unsigned long taste3 = 605660;
+const unsigned long taste4 = 605665;
 
 byte started = false;
 RCSwitch mySwitch = RCSwitch();
@@ -88,18 +89,18 @@ ISR(PCINT_VECTOR)
 void loop()
 {
   if (mySwitch.available())
-  {
-    currentCodeMain = mySwitch.getReceivedValue();
+  {    
+    currentCodeMain = (int)mySwitch.getReceivedValue();       
     mySwitch.resetAvailable();
   }
 
   switch (currentCodeMain)
   {
-  case taste1:
+  case (int)taste1:
     tone(TONE_PIN, 150, 200);
     blinker.blinkLeft();
     break;
-  case taste2:
+  case (int)taste2:
     tone(TONE_PIN, 50, 200);
     blinker.blinkRight();
     break;
