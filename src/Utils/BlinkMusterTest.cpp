@@ -2,7 +2,7 @@
 #include <FastLED.h>
 #include "BlinkMuster.h"
 
-#define NUM_LEDS 21
+#define NUM_LEDS 23
 #define DATA_PIN 4
 
 CRGB leds[NUM_LEDS];

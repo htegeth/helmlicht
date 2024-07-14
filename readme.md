@@ -34,9 +34,48 @@ Sonstiges|Kabel, Filament, Schrauben
 Ausserdem sind noch ein 3D-Drucker und ein Lötkolben erforderlich.
 
 # Programmieren
+Für die Programmierung des ATtiny benötigt man ein Programmiergerät oder ein Arduino Board. Setzt man den Attiny auf ein Breadboard und verwendte den Arduino als ISP Programmer, können an den Anschlüssen des Attiny zugleich auch die später zu verbauenden Module getestet werden. Es ist nicht notwenig, den LED Strip, das Funkmodul oder auch den Piezo Summer beim Programmieren zu entfernen. Lässt man alles verbaut kann soft man will die Programmierung wiederholt werden. 
 
-## Schritt für Schritt
-1. Fuse des ATtiny richtig setzen über PlatformIO/Project Tasks/Attiny_Helmlich/Platform/Set Fuses
+1. Vorbereitung des Arduino als ISP Programmer
+2. Setzen der Fuse des ATtiny 
+3. Build und Upload des Codes
+
+## Vorbedreitung des Arduino Boards und des ATtiny
+Der Code um den Arduino als ISP nutzen zu können ist Teil der Examples der Arduino IDE: https://www.arduino.cc/en/software
+Dazu wird das Arduino Board über USB mit dem Rechner verbunden, und mit dem Skript File/Examples/11.ArduinoISP programmiert ([Arduino Examples](https://docs.arduino.cc/built-in-examples/arduino-isp/ArduinoISP/))
+
+Der Ardino wird bemäß Pin Layout angeschlossen:
+
+<img src="doc/ISP-Schaltung.png" width=700>
+
+Nicht vergessen: Sollte der Arduino erneut programmiert werden muss der Kondensator entfernt werden.
+
+Falls direkt getestet werden soll ob die Schaltung auf korrekt programmiert wurde können alle später verbauten Teile angeschlossen werden um die Korrektheit zu prüfen.
+
+<img src="doc/ISP-Schaltung-Teststand.png" width=700>
+
+Der angeschlossene Piezo Buzzer wird jetzt beim Programmiervorgang einige Geräusche machen. Davon sollte man sich nicht irritieren lassen, der Programmiervorgang wird trotzdem erfolgreich sein.
+
+## Programmierung über PlatformIO
+Nachdem der Arduino als ISP programmiert wurde, kann die Arduino IDE geschlossen werden. Sie wird im Projekt nicht mehr benötigt. Statt dessen wird Visual Studio Code eingesetzt mit dem Plugin PlatformIO.
+- Download und install von [VS Code](https://code.visualstudio.com/download)
+- PlatformIO IDE als Plugin installieren
+- Arduino für Visual Studio Code als Plugin installieren
+- Korrekten Port einstellen und in platformio.ini unter upload_port eintragen
+- Fuse Einstellung für den ATTiny85
+- Upload durchführen
+
+In der Ini-Datei platmormio.ini wird nun die Kofiguration für den ATTiny85 eingetragen wie in [platfomio.org ](https://docs.platformio.org/en/latest/boards/atmelavr/attiny85.html#) beschrieben. Für das Projekt sind bereits alle notwendige Einstellungen festgelegt worden. Lediglich der Port muss noch eingetragen werden der bei Windows im Gerätemanager unter Ports zu finden ist und bei Linux über <code>ls /dev/tty*</code> angezeigt wird.
+
+Der ATtiny muss bei 8Mhz betrieben werden sonst versagt die FastLED Bibliothek ihren Dienst. Damit trotzdem das Timing korrekt funktfunktioniert muss der CKDIV8=0 deaktiviert sein. Dazu wird die lfuse auf 0xE2 gesetzt. Um diesen Wert zu setzen muss unter
+<code>PLATFORMIO(Ameisenkopf linke Steuerungsleiste)/Platform/ Set Fuse</code> per Klick ausgeführt werden.
+
+Wenn das alles erfolgreich war kann der Code den Mircocontroller hochgeladen werden. Dazu auf den winzigen Pfeil nach rechts ganz unten klicken.
+
+Im Terminal sollte der Upload mit Status SUCCESS beendet werden.
+
+# Die Fernbedienung
+
 
 # Utils
 ## BlickTest
@@ -52,7 +91,7 @@ https://community.platformio.org/t/attiny-8mhz-wrong-timing-in-delay-fastled-and
 HIer werden Probleme angesprochen, dass der delay nicht rictig fuktioniert weil die CPU unter 1Mhz läuft bei eingestellten 8 
 !! Es kann auch ein Grund dafür sein, dass der NEOPiXEL nicht meh rrichtig klappt
 
-Auf dieser Seite gibt es einen Taktrechner: https://www.engbedded.com/fusecalc/
+Auf dieser Seite gibt es einen Taktrechner: https://www.engbedded.com/fusecalc/ und noch mehr. Es gibt hier einige Einstellungen die über Fuse geregelt werden und die das Verhalten der ATtiny vor dem Startup regeln.
 
 ## RX Nodule
 Der XY-MK-5V ist das Standardmodul für 433Mhz Funkübertragung meist im Set mit dem FS1000A, Der Sender und der Empfäger sind relative primitive Konstruktionen, bei der eine Spule in Schwingung versetzt wird und diese Schwingung beim RX Modul verstärkt an dem Datenpin angelegt wird.
