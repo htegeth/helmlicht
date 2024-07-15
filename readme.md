@@ -9,7 +9,7 @@ Mit einer programmierbaren 433Mhz Standardfernbedienung wird das Rücklicht ange
 <img src="doc/Vorfuehrung_Offstreet-Tiny.gif" width=700>
 
 
-# Stückliste
+# Die Stückliste
 Folgende Teile werden verbaut:
 Bauteil               | Beschreibung | Quelle | Kosten
 --------              |--------------|------- | -----
@@ -33,7 +33,7 @@ Sonstiges|Kabel, Filament, Schrauben
 
 Ausserdem sind noch ein 3D-Drucker und ein Lötkolben erforderlich.
 
-# Programmieren
+# Die Programmierung
 Für die Programmierung des ATtiny benötigt man ein Programmiergerät oder ein Arduino Board. Setzt man den Attiny auf ein Breadboard und verwendte den Arduino als ISP Programmer, können an den Anschlüssen des Attiny zugleich auch die später zu verbauenden Module getestet werden. Es ist nicht notwenig, den LED Strip, das Funkmodul oder auch den Piezo Summer beim Programmieren zu entfernen. Lässt man alles verbaut kann soft man will die Programmierung wiederholt werden. 
 
 1. Vorbereitung des Arduino als ISP Programmer
@@ -75,6 +75,42 @@ Wenn das alles erfolgreich war kann der Code den Mircocontroller hochgeladen wer
 Im Terminal sollte der Upload mit Status SUCCESS beendet werden.
 
 # Die Fernbedienung
+Als Steuerung des Helmlichtes wird eine programmierbare 433Mhz (oder 315Mhz - in DE obsolet)  Fernbedienung verwendet. In der Regel werden diese Fernbedienungen schon vorprogrammiert geliefert. Ist dies nicht der Fall oder der Fernbedienungscode ein anderer als im Sourcecode der <code>Main.class</class> hinterlegt:
+```cpp
+...
+// Fernbedienungscodes. Ausgelesen über RCSwitch.getReceivedValue()
+const unsigned long taste1 = 753832;
+const unsigned long taste2 = 753828;
+const unsigned long taste3 = 605660;
+const unsigned long taste4 = 605665;
+...
+```
+muss die Fernbedienung programmiert werden. Um dies zu tun, wird eine weiteres Modul benötigt. Ein Sendemodul wie das MX-FS-03V reicht dafür aus. Zum Versenden kann der auch hier als Grundlage verwendet Code des Projektes rc-switch [rc-switch](https://github.com/sui77/rc-switch/) verwendet werden. Dazu kann man die Arduino IDE starten ein neues Skript öffnen und für <code>taste1</code> folgenden Code in den Sketch kopieren:
+```cpp
+#include <RCSwitch.h>
+
+RCSwitch mySwitch = RCSwitch();
+
+void setup() {
+  Serial.begin(9600);
+  //Modul Data an Arduino PIN10
+  mySwitch.enableTransmit(10);  
+}
+
+void loop() {
+  mySwitch.send(753832, 24);
+}
+```
+Den Arduino nun starten und die Fernbedienung den Code lernen lassen. Bei den meisten aus China stammenden lernenden Fernbedienungen muss dazu in der Lernvorgang gestartet werden z.B. durch gleichzeitiges Drücken der Taste A und B bis die Bestätigungs LED dreimal blinkt anschließend B drücken. Dannach die Fernbedienung in die Nähe des Sendemoduls halten und den gewünschten Knopf solange gedrückt halten bis aus dem Blinken der Kontrol-LED ein Flackern geworden ist.
+Anschließend im Sketch den Code der Taste ändern, auf den Arduino laden und die nächste Taste gedrückt halten.
+
+# Die Montage
+Für die Montage muss die Helmlicht Box ausgedruckt werden. Auch wenn PLA als Druckmatrial zunächst ausreicht wäre für den intensiven Outdoor Einsatz ASA eventuell geigneter. Allerdings ist der Deckel der Box nur verpresst montiert und nicht komplett wasserdicht. 
+
+Das PCB Board wird auf 18 Loch lang und 6 Loch hoch gekürzt. Es lässt sich zusägen oder es werden mit einem Cutter Messer die Bruchkanten eingeritzt um anschließend mit einer Zange die überstehenden Bereiche abzuknicken.
+Liegt die Box mit der Aussparrung nach vorne zeigend vor einem, wird auf der linken Seite das Akku-Lademodul in die Ausparrung geklemmt. Der Schiebeschalter wird mit den ausgedruckten Nieten an der Box verschmolzen. Dazu die Nieten durch die Montagelöcher schieben und mit einem Lötkolben von Aussen verschmelzen. Vorher den Schalter und das Lademodul mit Kabeln und Steckern verbinden. Auf der Linken Seite sollte nun noch soviel Platz sein, dass der Akku so in den Raum gelegt werden kann, dass der Decke sich schließen lässt.
+
+
 
 
 # Utils
