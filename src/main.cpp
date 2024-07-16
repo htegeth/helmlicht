@@ -91,7 +91,7 @@ void runBacklightAnimation(int mode){
     switch (mode)
     {
     case 1:
-      /* ToDO more Animation code */
+      blinker.drawComet();
       break;
     default:
       blinker.wawa();
@@ -115,7 +115,7 @@ void loop()
   case (int)taste2:
     tone(TONE_PIN, 50, 200);
     blinker.blinkRight();
-    break;
+    break;  
   default:
     runBacklightAnimation(0);
     break;

@@ -105,6 +105,34 @@ bool BlinkMuster::runright()
     return true;
 }
 
+void BlinkMuster::drawComet()
+{
+    const byte fadeAmt = 128;
+    const int cometSize = 1;
+    const int deltaHue  = 4;
+
+    static byte hue = HUE_RED;
+    static int iDirection = 1;
+    static int iPos = 0;
+
+    hue += deltaHue;
+
+    iPos += iDirection;
+    if (iPos == (numberLeds - cometSize) || iPos == 0)
+        iDirection *= -1;
+    
+    for (int i = 0; i < cometSize; i++)
+        leds[iPos + i].setHue(hue);
+    
+     //Randomly fade the LEDs
+     for (int j = 0; j < numberLeds; j++)
+         if (random(10) > 5)
+             leds[j] = leds[j].fadeToBlackBy(fadeAmt);  
+    FastLED.show();
+    delay(60);
+}
+
+
 void BlinkMuster::wawa(){
     if (runleft()) runright();  
 }

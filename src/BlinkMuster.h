@@ -34,6 +34,8 @@ class BlinkMuster
 
         void wawa();
 
+        void drawComet();
+
                 
 
 };
