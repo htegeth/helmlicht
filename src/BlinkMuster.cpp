@@ -17,6 +17,8 @@ void BlinkMuster::setNumberLeds(int numberLeds)
 
 void BlinkMuster::init()
 {
+
+
     ledFragment =  numberLeds/3;
     rightBegin = ledFragment;
     leftBegin = numberLeds - ledFragment;
@@ -107,16 +109,8 @@ bool BlinkMuster::runright()
 
 void BlinkMuster::drawComet()
 {
-    const byte fadeAmt = 128;
-    const int cometSize = 1;
-    const int deltaHue  = 4;
-
-    static byte hue = HUE_RED;
-    static int iDirection = 1;
-    static int iPos = 0;
-
+    int cometSize = 1;
     hue += deltaHue;
-
     iPos += iDirection;
     if (iPos == (numberLeds - cometSize) || iPos == 0)
         iDirection *= -1;

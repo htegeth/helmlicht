@@ -8,8 +8,6 @@
 //
 
 #include <Arduino.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
 #include <atRcRwitch.h>
 #include <FastLED.h>
 #include "BlinkMuster.h"

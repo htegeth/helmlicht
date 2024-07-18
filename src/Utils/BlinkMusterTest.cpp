@@ -9,6 +9,7 @@ CRGB leds[NUM_LEDS];
 BlinkMuster blinker = BlinkMuster();
 
 
+
 void setup() {
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
   blinker.setLeds(leds);
@@ -18,7 +19,8 @@ void setup() {
 
  
 void loop() {    
-    blinker.blinkLeft();
-    blinker.blinkRight();
+    //blinker.blinkLeft();
+    //blinker.blinkRight();
+    blinker.drawComet();
 }
 

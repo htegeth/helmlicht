@@ -1,17 +1,29 @@
 #include <FastLED.h>
 
+   
+        
 class BlinkMuster
 {
-    private:
-        const int defaultDelay = 50;
-        const int runDelayTime = defaultDelay;
-        int numberLeds;
+     private:
+        const byte fadeAmt = 128;
+        //const int cometSize = 1;
+        const int8_t deltaHue  = 4;
+
+
+        //const int defaultDelay = 50;
+        const int runDelayTime = 50;
+        int8_t numberLeds;
         CRGB* leds;
-        int ledFragment = 0;
-        int rightBegin = 0;
-        int leftBegin = 0;
+        int8_t ledFragment = 0;
+        int8_t rightBegin = 0;
+        int8_t leftBegin = 0;
         int blinkDelayMain = 0;
         int blinkDelaySub = 0;
+
+        byte hue = HUE_RED;
+        int8_t iDirection = 1;
+        int8_t iPos = 0;
+
 
     public:
         BlinkMuster();
