@@ -146,5 +146,19 @@ Die Herausfoderung bei der Signalverarbeitung ist es zuerst die Störungen herau
     - wird der Cursor für das Array der Signal zurückgesetzt (egal was vorher war)
     - wenn das eine Signallücke ist (am Anfang oder zwischen den Signalen) und diese schon das zweite mal auftritt
       - dann könnte eine ganze Signalkette vorliegen, diese wird an receiveProtocol weitergegeben zum analysiere
+
+# Weiterführende Links
+
+Titel | Hintergrund | Quelle
+-----|--------|---------
+Erste Schritte mit ATtiny|Leider ein Bezahlartikel, aber erst durch diesen Artikel habe ich den Anstoß erhalten das Projekt umzusetzen. Allein weil der ATtiny so stromsparend ist und mit Battrie betrieben werden kann machte das Projekt er möglich. (Viele freie Artikel sind auch bei Wolles Elektronikkiste weiter unten zu finden)| [Heise Make Artikel](https://www.heise.de/ratgeber/Erste-Schritte-mit-ATtiny-Guenstige-Alternativen-fuer-kleine-Hardware-Projekte-9654461.html) 
+Speicherverbrauch in Mikrocontrollern erklärt| Bei der Experimentierphase habe ich alle möglichen Bibliotheken in der main.css eingebunden auch solche die später vergessen habe. Da hier nicht wenige Konstanten definiert sind und durch den Code unnötig Speicherplatz belegt wurde, konnten kompliziertere Blinkmuster nicht abgespielt werden. Offensichtlich hat der mangende Speicherplatz zu Problemen bei der Ausführung geführt. Dieser Artikel beschreibt den Speicheraufbau eines Mikrocontrollers bei ATM.  | [Heise Make Artikel](https://www.heise.de/ratgeber/Speicherverbrauch-in-Mikrocontrollern-erklaert-9730630.html)
+Attiny85 Datasheet| Die offizielle Dokumentation. Hier wird unter anderen beschrieben wie der Speicher aufgebaut ist (siehe auch oben) und die Fuse funktionieren. Wenn etwas hier nicht dokumentiert ist, gibt es die Funktion auch nicht. | [Datenblatt des ATtiny 85](https://ww1.microchip.com/downloads/en/devicedoc/atmel-2586-avr-8-bit-microcontroller-attiny25-attiny45-attiny85_datasheet.pdf)
+Wolles Elektronikkiste | Hier finden sich Details und Hintergründe zur Programmierung des ATtiny. Ebenso habe ich dort gelernt wie das Funken über 433Mhz funktioniert. Alles verständlich erklärt und gut beschrieben. Ein Fundgrube gerade auch für Anfänger (in der Welt der Mikrocomputer) oder Personen, die noch lernen wollen. | [wolles-elektronikkiste.de ](https://wolles-elektronikkiste.de/)
+Dave's Garage | Der Youtube Chanel des LED Begeisterten ehemaligen Microsoft Entwicklers David Plummer. In den Episoden 06 bis 09 beschreibt Dave wie mit WS2812 coole Effekte erzeugt werden können. Sie dienten als Inspiration und als Erinnerung daran, dass der LED Strip, den wir einsetzen,1,6 M Farben darstellen kann, fast stufenlos dimmbar.| [Github Repro mit Beispielen](https://github.com/davepl/DavesGarageLEDSeries) <br> [Episode 6, der Komet Effekt](https://www.youtube.com/watch?v=yM5dY7K2KHM&list=PLqZiTnLvpldhp2_pTo5WplS8zRoiuOt19&index=7)
+
+
+
+
     
 

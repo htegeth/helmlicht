@@ -35,25 +35,10 @@
 #include "atRcRwitch.h"
 #include "Control.h"
 
-#ifdef RaspberryPi
-    // PROGMEM and _P functions are for AVR based microprocessors,
-    // so we must normalize these for the ARM processor:
-    #define PROGMEM
-    #define memcpy_P(dest, src, num) memcpy((dest), (src), (num))
-#endif
 
-#if defined(ESP8266)
-    // interrupt handler and related code must be in RAM on ESP8266,
-    // according to issue #46.
-    #define RECEIVE_ATTR ICACHE_RAM_ATTR
-    #define VAR_ISR_ATTR
-#elif defined(ESP32)
-    #define RECEIVE_ATTR IRAM_ATTR
-    #define VAR_ISR_ATTR DRAM_ATTR
-#else
-    #define RECEIVE_ATTR
-    #define VAR_ISR_ATTR
-#endif
+#define RECEIVE_ATTR
+#define VAR_ISR_ATTR
+
 
 
 /* Format for protocol definitions:
@@ -74,12 +59,13 @@
  *     |   |_
  *
  * These are combined to form Tri-State bits when sending or receiving codes.
+ * 
+ * ###############################################################################
+ * 
+ * Reduced by one protocol to save memory 
  */
-#if defined(ESP8266) || defined(ESP32)
-static const VAR_ISR_ATTR RCSwitch::Protocol proto[] = {
-#else
 static const RCSwitch::Protocol PROGMEM proto[] = {
-#endif
+
   { 350, {  1, 31 }, {  1,  3 }, {  3,  1 }, false },    // protocol 1
 };
 
@@ -87,7 +73,7 @@ enum {
    numProto = sizeof(proto) / sizeof(proto[0])
 };
 
-#if not defined( RCSwitchDisableReceiving )
+
 volatile unsigned long RCSwitch::nReceivedValue = 0;
 volatile unsigned int RCSwitch::nReceivedBitlength = 0;
 volatile unsigned int RCSwitch::nReceivedDelay = 0;
@@ -99,17 +85,17 @@ const unsigned int VAR_ISR_ATTR RCSwitch::nSeparationLimit = 4300;
 //könnte es geeigneter sein, das Trennungslimit auf die gleiche Zeit 
 //wie den „Low“-Teil des Sync-Signals für das aktuelle Protokoll zu setzen.
 unsigned int RCSwitch::timings[RCSWITCH_MAX_CHANGES];
-#endif
+
 
 RCSwitch::RCSwitch() {
   this->nTransmitterPin = -1;
   this->setRepeatTransmit(10);
   this->setProtocol(1);
-  #if not defined( RCSwitchDisableReceiving )
+  
   this->nReceiverInterrupt = -1;
   this->setReceiveTolerance(60);
   RCSwitch::nReceivedValue = 0;
-  #endif
+  
 }
 
 /**
@@ -126,11 +112,9 @@ void RCSwitch::setProtocol(int nProtocol) {
   if (nProtocol < 1 || nProtocol > numProto) {
     nProtocol = 1;  // TODO: trigger an error, e.g. "bad protocol" ???
   }
-#if defined(ESP8266) || defined(ESP32)
-  this->protocol = proto[nProtocol-1];
-#else
+
   memcpy_P(&this->protocol, &proto[nProtocol-1], sizeof(Protocol));
-#endif
+
 }
 
 /**
@@ -159,11 +143,11 @@ void RCSwitch::setRepeatTransmit(int nRepeatTransmit) {
 /**
  * Set Receiving Tolerance
  */
-#if not defined( RCSwitchDisableReceiving )
+
 void RCSwitch::setReceiveTolerance(int nPercent) {
   RCSwitch::nReceiveTolerance = nPercent;
 }
-#endif
+
   
 
 /**
@@ -183,111 +167,6 @@ void RCSwitch::disableTransmit() {
   this->nTransmitterPin = -1;
 }
 
-/**
- * Switch a remote switch on (Type D REV)
- *
- * @param sGroup        Code of the switch group (A,B,C,D)
- * @param nDevice       Number of the switch itself (1..3)
- */
-void RCSwitch::switchOn(char sGroup, int nDevice) {
-  this->sendTriState( this->getCodeWordD(sGroup, nDevice, true) );
-}
-
-/**
- * Switch a remote switch off (Type D REV)
- *
- * @param sGroup        Code of the switch group (A,B,C,D)
- * @param nDevice       Number of the switch itself (1..3)
- */
-void RCSwitch::switchOff(char sGroup, int nDevice) {
-  this->sendTriState( this->getCodeWordD(sGroup, nDevice, false) );
-}
-
-/**
- * Switch a remote switch on (Type C Intertechno)
- *
- * @param sFamily  Familycode (a..f)
- * @param nGroup   Number of group (1..4)
- * @param nDevice  Number of device (1..4)
-  */
-void RCSwitch::switchOn(char sFamily, int nGroup, int nDevice) {
-  this->sendTriState( this->getCodeWordC(sFamily, nGroup, nDevice, true) );
-}
-
-/**
- * Switch a remote switch off (Type C Intertechno)
- *
- * @param sFamily  Familycode (a..f)
- * @param nGroup   Number of group (1..4)
- * @param nDevice  Number of device (1..4)
- */
-void RCSwitch::switchOff(char sFamily, int nGroup, int nDevice) {
-  this->sendTriState( this->getCodeWordC(sFamily, nGroup, nDevice, false) );
-}
-
-/**
- * Switch a remote switch on (Type B with two rotary/sliding switches)
- *
- * @param nAddressCode  Number of the switch group (1..4)
- * @param nChannelCode  Number of the switch itself (1..4)
- */
-void RCSwitch::switchOn(int nAddressCode, int nChannelCode) {
-  this->sendTriState( this->getCodeWordB(nAddressCode, nChannelCode, true) );
-}
-
-/**
- * Switch a remote switch off (Type B with two rotary/sliding switches)
- *
- * @param nAddressCode  Number of the switch group (1..4)
- * @param nChannelCode  Number of the switch itself (1..4)
- */
-void RCSwitch::switchOff(int nAddressCode, int nChannelCode) {
-  this->sendTriState( this->getCodeWordB(nAddressCode, nChannelCode, false) );
-}
-
-/**
- * Deprecated, use switchOn(const char* sGroup, const char* sDevice) instead!
- * Switch a remote switch on (Type A with 10 pole DIP switches)
- *
- * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
- * @param nChannelCode  Number of the switch itself (1..5)
- */
-void RCSwitch::switchOn(const char* sGroup, int nChannel) {
-  const char* code[6] = { "00000", "10000", "01000", "00100", "00010", "00001" };
-  this->switchOn(sGroup, code[nChannel]);
-}
-
-/**
- * Deprecated, use switchOff(const char* sGroup, const char* sDevice) instead!
- * Switch a remote switch off (Type A with 10 pole DIP switches)
- *
- * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
- * @param nChannelCode  Number of the switch itself (1..5)
- */
-void RCSwitch::switchOff(const char* sGroup, int nChannel) {
-  const char* code[6] = { "00000", "10000", "01000", "00100", "00010", "00001" };
-  this->switchOff(sGroup, code[nChannel]);
-}
-
-/**
- * Switch a remote switch on (Type A with 10 pole DIP switches)
- *
- * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
- * @param sDevice       Code of the switch device (refers to DIP switches 6..10 (A..E) where "1" = on and "0" = off, if all DIP switches are on it's "11111")
- */
-void RCSwitch::switchOn(const char* sGroup, const char* sDevice) {
-  this->sendTriState( this->getCodeWordA(sGroup, sDevice, true) );
-}
-
-/**
- * Switch a remote switch off (Type A with 10 pole DIP switches)
- *
- * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
- * @param sDevice       Code of the switch device (refers to DIP switches 6..10 (A..E) where "1" = on and "0" = off, if all DIP switches are on it's "11111")
- */
-void RCSwitch::switchOff(const char* sGroup, const char* sDevice) {
-  this->sendTriState( this->getCodeWordA(sGroup, sDevice, false) );
-}
 
 
 /**
@@ -391,81 +270,6 @@ char* RCSwitch::getCodeWordC(char sFamily, int nGroup, int nDevice, bool bStatus
 }
 
 /**
- * Encoding for the REV Switch Type
- *
- * The code word is a tristate word and with following bit pattern:
- *
- * +-----------------------------+-------------------+----------+--------------+
- * | 4 bits address              | 3 bits address    | 3 bits   | 2 bits       |
- * | switch group                | device number     | not used | on / off     |
- * | A=1FFF B=F1FF C=FF1F D=FFF1 | 1=0FF 2=F0F 3=FF0 | 000      | on=10 off=01 |
- * +-----------------------------+-------------------+----------+--------------+
- *
- * Source: http://www.the-intruder.net/funksteckdosen-von-rev-uber-arduino-ansteuern/
- *
- * @param sGroup        Name of the switch group (A..D, resp. a..d) 
- * @param nDevice       Number of the switch itself (1..3)
- * @param bStatus       Whether to switch on (true) or off (false)
- *
- * @return char[13], representing a tristate code word of length 12
- */
-char* RCSwitch::getCodeWordD(char sGroup, int nDevice, bool bStatus) {
-  static char sReturn[13];
-  int nReturnPos = 0;
-
-  // sGroup must be one of the letters in "abcdABCD"
-  int nGroup = (sGroup >= 'a') ? (int)sGroup - 'a' : (int)sGroup - 'A';
-  if ( nGroup < 0 || nGroup > 3 || nDevice < 1 || nDevice > 3) {
-    return 0;
-  }
-
-  for (int i = 0; i < 4; i++) {
-    sReturn[nReturnPos++] = (nGroup == i) ? '1' : 'F';
-  }
-
-  for (int i = 1; i <= 3; i++) {
-    sReturn[nReturnPos++] = (nDevice == i) ? '1' : 'F';
-  }
-
-  sReturn[nReturnPos++] = '0';
-  sReturn[nReturnPos++] = '0';
-  sReturn[nReturnPos++] = '0';
-
-  sReturn[nReturnPos++] = bStatus ? '1' : '0';
-  sReturn[nReturnPos++] = bStatus ? '0' : '1';
-
-  sReturn[nReturnPos] = '\0';
-  return sReturn;
-}
-
-/**
- * @param sCodeWord   a tristate code word consisting of the letter 0, 1, F
- */
-void RCSwitch::sendTriState(const char* sCodeWord) {
-  // turn the tristate code word into the corresponding bit pattern, then send it
-  unsigned long code = 0;
-  unsigned int length = 0;
-  for (const char* p = sCodeWord; *p; p++) {
-    code <<= 2L;
-    switch (*p) {
-      case '0':
-        // bit pattern 00
-        break;
-      case 'F':
-        // bit pattern 01
-        code |= 1L;
-        break;
-      case '1':
-        // bit pattern 11
-        code |= 3L;
-        break;
-    }
-    length += 2;
-  }
-  this->send(code, length);
-}
-
-/**
  * @param sCodeWord   a binary code word consisting of the letter 0, 1
  */
 void RCSwitch::send(const char* sCodeWord) {
@@ -490,13 +294,13 @@ void RCSwitch::send(unsigned long code, unsigned int length) {
   if (this->nTransmitterPin == -1)
     return;
 
-#if not defined( RCSwitchDisableReceiving )
+
   // make sure the receiver is disabled while we transmit
   int nReceiverInterrupt_backup = nReceiverInterrupt;
   if (nReceiverInterrupt_backup != -1) {
     this->disableReceive();
   }
-#endif
+
 
   for (int nRepeat = 0; nRepeat < nRepeatTransmit; nRepeat++) {
     for (int i = length-1; i >= 0; i--) {
@@ -511,12 +315,11 @@ void RCSwitch::send(unsigned long code, unsigned int length) {
   // Disable transmit after sending (i.e., for inverted protocols)
   digitalWrite(this->nTransmitterPin, LOW);
 
-#if not defined( RCSwitchDisableReceiving )
   // enable receiver again if we just disabled it
   if (nReceiverInterrupt_backup != -1) {
     this->enableReceive(nReceiverInterrupt_backup);
   }
-#endif
+
 }
 
 /**
@@ -532,8 +335,6 @@ void RCSwitch::transmit(HighLow pulses) {
   delayMicroseconds( this->protocol.pulseLength * pulses.low);
 }
 
-
-#if not defined( RCSwitchDisableReceiving )
 /**
  * Enable receiving data
  */
@@ -546,11 +347,6 @@ void RCSwitch::enableReceive() {
   if (this->nReceiverInterrupt != -1) {
     RCSwitch::nReceivedValue = 0;
     RCSwitch::nReceivedBitlength = 0;
-#if defined(RaspberryPi) // Raspberry Pi
-    wiringPiISR(this->nReceiverInterrupt, INT_EDGE_BOTH, &handleInterrupt);
-#else // Arduino
-    //attachInterrupt(this->nReceiverInterrupt, handleInterrupt, CHANGE);
-#endif
   }
 }
 
@@ -558,9 +354,6 @@ void RCSwitch::enableReceive() {
  * Disable receiving data
  */
 void RCSwitch::disableReceive() {
-#if not defined(RaspberryPi) // Arduino
-  detachInterrupt(this->nReceiverInterrupt);
-#endif // For Raspberry Pi (wiringPi) you can't unregister the ISR
   this->nReceiverInterrupt = -1;
 }
 
@@ -601,12 +394,10 @@ static inline unsigned int diff(int A, int B) {
  *
  */
 bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCount) {
-#if defined(ESP8266) || defined(ESP32)
-    const Protocol &pro = proto[p-1];
-#else
+
     Protocol pro;
     memcpy_P(&pro, &proto[p-1], sizeof(Protocol));
-#endif
+
 
     unsigned long code = 0;
     //Assuming the longer pulse length is the pulse captured in timings[0]
@@ -701,4 +492,3 @@ void RECEIVE_ATTR RCSwitch::handleInterrupt() {
   RCSwitch::timings[changeCount++] = duration;
   lastTime = time;  
 }
-#endif
