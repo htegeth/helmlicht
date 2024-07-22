@@ -2,12 +2,11 @@
 #include <Arduino.h>
 #include <FastLED.h>
 
-// How many leds in your strip?
 #define NUM_LEDS 23
 #define DATA_PIN 4
 
 
-// Define the array of leds
+// array of leds
 CRGB leds[NUM_LEDS];
 
 #define NUM_COLORS 5
@@ -72,9 +71,7 @@ void DrawMarqueeMirrored()
     static byte j = 0;
     j+=4;
     byte k = j;
-
-    // Roughly equivalent to fill_rainbow(g_LEDs, NUM_LEDS, j, 8);
-
+    
     CRGB c;
     for (int i = 0; i < (NUM_LEDS + 1) / 2; i ++)
     {

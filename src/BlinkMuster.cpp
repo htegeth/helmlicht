@@ -126,6 +126,23 @@ void BlinkMuster::drawComet()
     delay(60);
 }
 
+void BlinkMuster::drawKitt()
+{
+    //static int iDirection = 1;
+    //static int iPos = 0;
+
+    iPos += iDirection;
+    if (iPos == (numberLeds - 1) || iPos == 0)
+        iDirection *= -1;
+        
+    FastLED.clear();
+    leds[iPos].setHue(HUE_RED);
+    if( (iPos+1)< numberLeds )
+        leds[iPos+1].setHue(HUE_RED).fadeToBlackBy(100);
+    leds[iPos-1].setHue(HUE_RED).fadeToBlackBy(100);
+    delay(150);
+}
+
 
 void BlinkMuster::wawa(){
     if (runleft()) runright();  

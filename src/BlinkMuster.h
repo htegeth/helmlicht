@@ -48,6 +48,8 @@ class BlinkMuster
 
         void drawComet();
 
+        void drawKitt();
+
                 
 
 };

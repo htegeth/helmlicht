@@ -62,7 +62,8 @@
  * 
  * ###############################################################################
  * 
- * Reduced by one protocol to save memory 
+ * Reduced by one protocol to save memory
+ * add more protocols if required, usually this is not necessary
  */
 static const RCSwitch::Protocol PROGMEM proto[] = {
 
@@ -81,9 +82,7 @@ volatile unsigned int RCSwitch::nReceivedProtocol = 0;
 int RCSwitch::nReceiveTolerance = 60;
 const unsigned int VAR_ISR_ATTR RCSwitch::nSeparationLimit = 4300;
 // separationLimit: minimale Mikrosekunden zwischen den empfangenen Codes, 
-//engere Codes werden ignoriert. Gemäß der Diskussion zu Thema #14 
-//könnte es geeigneter sein, das Trennungslimit auf die gleiche Zeit 
-//wie den „Low“-Teil des Sync-Signals für das aktuelle Protokoll zu setzen.
+//engere Codes werden ignoriert. 
 unsigned int RCSwitch::timings[RCSWITCH_MAX_CHANGES];
 
 
@@ -167,128 +166,13 @@ void RCSwitch::disableTransmit() {
   this->nTransmitterPin = -1;
 }
 
-
-
-/**
- * Returns a char[13], representing the code word to be send.
- *
- */
-char* RCSwitch::getCodeWordA(const char* sGroup, const char* sDevice, bool bStatus) {
-  static char sReturn[13];
-  int nReturnPos = 0;
-
-  for (int i = 0; i < 5; i++) {
-    sReturn[nReturnPos++] = (sGroup[i] == '0') ? 'F' : '0';
-  }
-
-  for (int i = 0; i < 5; i++) {
-    sReturn[nReturnPos++] = (sDevice[i] == '0') ? 'F' : '0';
-  }
-
-  sReturn[nReturnPos++] = bStatus ? '0' : 'F';
-  sReturn[nReturnPos++] = bStatus ? 'F' : '0';
-
-  sReturn[nReturnPos] = '\0';
-  return sReturn;
-}
-
-/**
- * Encoding for type B switches with two rotary/sliding switches.
- *
- * The code word is a tristate word and with following bit pattern:
- *
- * +-----------------------------+-----------------------------+----------+------------+
- * | 4 bits address              | 4 bits address              | 3 bits   | 1 bit      |
- * | switch group                | switch number               | not used | on / off   |
- * | 1=0FFF 2=F0FF 3=FF0F 4=FFF0 | 1=0FFF 2=F0FF 3=FF0F 4=FFF0 | FFF      | on=F off=0 |
- * +-----------------------------+-----------------------------+----------+------------+
- *
- * @param nAddressCode  Number of the switch group (1..4)
- * @param nChannelCode  Number of the switch itself (1..4)
- * @param bStatus       Whether to switch on (true) or off (false)
- *
- * @return char[13], representing a tristate code word of length 12
- */
-char* RCSwitch::getCodeWordB(int nAddressCode, int nChannelCode, bool bStatus) {
-  static char sReturn[13];
-  int nReturnPos = 0;
-
-  if (nAddressCode < 1 || nAddressCode > 4 || nChannelCode < 1 || nChannelCode > 4) {
-    return 0;
-  }
-
-  for (int i = 1; i <= 4; i++) {
-    sReturn[nReturnPos++] = (nAddressCode == i) ? '0' : 'F';
-  }
-
-  for (int i = 1; i <= 4; i++) {
-    sReturn[nReturnPos++] = (nChannelCode == i) ? '0' : 'F';
-  }
-
-  sReturn[nReturnPos++] = 'F';
-  sReturn[nReturnPos++] = 'F';
-  sReturn[nReturnPos++] = 'F';
-
-  sReturn[nReturnPos++] = bStatus ? 'F' : '0';
-
-  sReturn[nReturnPos] = '\0';
-  return sReturn;
-}
-
-/**
- * Like getCodeWord (Type C = Intertechno)
- */
-char* RCSwitch::getCodeWordC(char sFamily, int nGroup, int nDevice, bool bStatus) {
-  static char sReturn[13];
-  int nReturnPos = 0;
-
-  int nFamily = (int)sFamily - 'a';
-  if ( nFamily < 0 || nFamily > 15 || nGroup < 1 || nGroup > 4 || nDevice < 1 || nDevice > 4) {
-    return 0;
-  }
-  
-  // encode the family into four bits
-  sReturn[nReturnPos++] = (nFamily & 1) ? 'F' : '0';
-  sReturn[nReturnPos++] = (nFamily & 2) ? 'F' : '0';
-  sReturn[nReturnPos++] = (nFamily & 4) ? 'F' : '0';
-  sReturn[nReturnPos++] = (nFamily & 8) ? 'F' : '0';
-
-  // encode the device and group
-  sReturn[nReturnPos++] = ((nDevice-1) & 1) ? 'F' : '0';
-  sReturn[nReturnPos++] = ((nDevice-1) & 2) ? 'F' : '0';
-  sReturn[nReturnPos++] = ((nGroup-1) & 1) ? 'F' : '0';
-  sReturn[nReturnPos++] = ((nGroup-1) & 2) ? 'F' : '0';
-
-  // encode the status code
-  sReturn[nReturnPos++] = '0';
-  sReturn[nReturnPos++] = 'F';
-  sReturn[nReturnPos++] = 'F';
-  sReturn[nReturnPos++] = bStatus ? 'F' : '0';
-
-  sReturn[nReturnPos] = '\0';
-  return sReturn;
-}
-
-/**
- * @param sCodeWord   a binary code word consisting of the letter 0, 1
- */
-void RCSwitch::send(const char* sCodeWord) {
-  // turn the tristate code word into the corresponding bit pattern, then send it
-  unsigned long code = 0;
-  unsigned int length = 0;
-  for (const char* p = sCodeWord; *p; p++) {
-    code <<= 1L;
-    if (*p != '0')
-      code |= 1L;
-    length++;
-  }
-  this->send(code, length);
-}
-
 /**
  * Transmit the first 'length' bits of the integer 'code'. The
  * bits are sent from MSB to LSB, i.e., first the bit at position length-1,
  * then the bit at position length-2, and so on, till finally the bit at position 0.
+ * 
+ * ###################
+ * Can be used to send a signal for the self-learning remote control
  */
 void RCSwitch::send(unsigned long code, unsigned int length) {
   if (this->nTransmitterPin == -1)

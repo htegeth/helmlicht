@@ -1,5 +1,8 @@
 /*
   Bases on  RCSwitch - Arduino libary for remote control outlet switches
+  Simplified for special use in the helmet light to save memory. 
+
+  #######
   Copyright (c) 2011 Suat Özgür.  All right reserved.
 
   Contributors:
@@ -44,8 +47,7 @@ class RCSwitch {
     RCSwitch();
     
     void send(unsigned long code, unsigned int length);
-    void send(const char* sCodeWord);
- 
+    
     void enableReceive(int interrupt);
     void enableReceive();
     void disableReceive();
@@ -111,14 +113,8 @@ class RCSwitch {
     void setProtocol(int nProtocol);
     void setProtocol(int nProtocol, int nPulseLength);
 
-
-    char* getCodeWordA(const char* sGroup, const char* sDevice, bool bStatus);
-    char* getCodeWordB(int nGroupNumber, int nSwitchNumber, bool bStatus);
-    char* getCodeWordC(char sFamily, int nGroup, int nDevice, bool bStatus);
-    
     void transmit(HighLow pulses);
 
-    
     static void handleInterrupt();
     static bool receiveProtocol(const int p, unsigned int changeCount);
     int nReceiverInterrupt;    
@@ -138,8 +134,6 @@ class RCSwitch {
      * timings[0] contains sync timing, followed by a number of bits
      */
     static unsigned int timings[RCSWITCH_MAX_CHANGES];
-  
-
     
 };
 
