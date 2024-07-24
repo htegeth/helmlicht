@@ -156,7 +156,7 @@ Speicherverbrauch in Mikrocontrollern erklärt| Bei der Experimentierphase habe 
 Attiny85 Datasheet| Die offizielle Dokumentation. Hier wird unter anderen beschrieben wie der Speicher aufgebaut ist (siehe auch oben) und die Fuse funktionieren. Wenn etwas hier nicht dokumentiert ist, gibt es die Funktion auch nicht. | [Datenblatt des ATtiny 85](https://ww1.microchip.com/downloads/en/devicedoc/atmel-2586-avr-8-bit-microcontroller-attiny25-attiny45-attiny85_datasheet.pdf)
 Wolles Elektronikkiste | Hier finden sich Details und Hintergründe zur Programmierung des ATtiny. Ebenso habe ich dort gelernt wie das Funken über 433Mhz funktioniert. Alles verständlich erklärt und gut beschrieben. Ein Fundgrube gerade auch für Anfänger (in der Welt der Mikrocomputer) oder Personen, die noch lernen wollen. | [wolles-elektronikkiste.de ](https://wolles-elektronikkiste.de/)
 Dave's Garage | Der Youtube Chanel des LED Begeisterten ehemaligen Microsoft Entwicklers David Plummer. In den Episoden 06 bis 09 beschreibt Dave wie mit WS2812 coole Effekte erzeugt werden können. Sie dienten als Inspiration und als Erinnerung daran, dass der LED Strip, den wir einsetzen,1,6 M Farben darstellen kann, fast stufenlos dimmbar.| [Github Repro mit Beispielen](https://github.com/davepl/DavesGarageLEDSeries) <br> [Episode 6, der Komet Effekt](https://www.youtube.com/watch?v=yM5dY7K2KHM&list=PLqZiTnLvpldhp2_pTo5WplS8zRoiuOt19&index=7)
-
+Speicherverbrauch in Mikrocontrollern|Dieser Artikel erklärt, wo im Arbeitsspeicher (RAM) welche Art von Daten gespeichert werden. |[Heise Artikel](https://www.heise.de/select/make/2024/3/2410108002281679788)
 
 
 
