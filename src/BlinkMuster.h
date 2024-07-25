@@ -20,6 +20,7 @@ class BlinkMuster
         int blinkDelayMain = 0;
         int blinkDelaySub = 0;
 
+
         byte hue = HUE_RED;
         int8_t iDirection = 1;
         int8_t iPos = 0;
@@ -34,6 +35,9 @@ class BlinkMuster
        
         void blinkRight();       
         void blinkLeft();
+
+        void setBlinkLeft();       
+        void setBlinkRight();
 
         /**
          * liefert false wenn die methode unterbrochen wurde

@@ -25,6 +25,7 @@
 boolean lightsOn = false;
 
 // Seltsam, wenn currentCode long ist, liefert  Control.hasCodeChanged() zu oft true. Bei typ int ist das kein Problem
+unsigned int lastCodeMain = 0;
 unsigned int currentCodeMain = 0;
 
 // Fernbedienungscodes. Ausgelesen über RCSwitch.getReceivedValue()
@@ -37,6 +38,9 @@ byte started = false;
 RCSwitch mySwitch = RCSwitch();
 CRGB leds[NUM_LEDS];
 BlinkMuster blinker = BlinkMuster();
+
+const int8_t max_mode =1;
+static int8_t mode = 0;
 
 void beep(unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds)
 {
@@ -85,21 +89,25 @@ ISR(PCINT_VECTOR)
   mySwitch.handleInterrupt();
 }
 
-void runBacklightAnimation(int mode){
+void runBacklightAnimation(){
     switch (mode)
     {
     case 1:
       blinker.drawComet();
       break;
     default:
-      blinker.wawa();
+      blinker.drawKitt();
     }
+    //TODO: 
+    //full read
+    //dimming red LED
 }
 
 void loop()
 {
   if (mySwitch.available())
   {    
+    lastCodeMain=currentCodeMain;
     currentCodeMain = (int)mySwitch.getReceivedValue();       
     mySwitch.resetAvailable();
   }
@@ -107,15 +115,23 @@ void loop()
   switch (currentCodeMain)
   {
   case (int)taste1:
+    if(currentCodeMain==lastCodeMain){ // ausprobieren ob das nicht sofort dazu führt, dass der Blinker wieder ausgeht
+      currentCodeMain=0;
+      lastCodeMain=currentCodeMain;
+      break;
+    }
     tone(TONE_PIN, 150, 200);
     blinker.blinkLeft();
     break;
   case (int)taste2:
     tone(TONE_PIN, 50, 200);
     blinker.blinkRight();
-    break;  
+    break; 
+  case (int)taste3: // nächsten Blinkmode auswählen
+    if(++mode>max_mode) mode=0;
+    break; 
   default:
-    runBacklightAnimation(0);
+    runBacklightAnimation();
     break;
   }
 }
