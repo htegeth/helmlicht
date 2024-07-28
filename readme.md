@@ -119,21 +119,46 @@ eingesetzt Prozessor funktioniert hinsichtlich Programmierung, Ausführung und A
 ## RemoteDecoder
 Für das Programm werden zwei LEDs und ein 433RX Board benötigt. Zusätzlich noch eine Fernbedienung. Es dient dazu die Codes der Funkfernbedienung auszulesen und zwar so wie der ATTiny diese mit der lib RCSwitch interpretiert. 
 
-# Tipps und Tricks
-## Timmings und Clock
+# Tipps und Hintergrund
+## Timings und Clock
 https://community.platformio.org/t/attiny-8mhz-wrong-timing-in-delay-fastled-and-neopixel/24992/4
 HIer werden Probleme angesprochen, dass der delay nicht rictig fuktioniert weil die CPU unter 1Mhz läuft bei eingestellten 8 
 !! Es kann auch ein Grund dafür sein, dass der NEOPiXEL nicht meh rrichtig klappt
 
 Auf dieser Seite gibt es einen Taktrechner: https://www.engbedded.com/fusecalc/ und noch mehr. Es gibt hier einige Einstellungen die über Fuse geregelt werden und die das Verhalten der ATtiny vor dem Startup regeln.
 
-## RX Nodule
+## RX Module
 Der XY-MK-5V ist das Standardmodul für 433Mhz Funkübertragung meist im Set mit dem FS1000A, Der Sender und der Empfäger sind relative primitive Konstruktionen, bei der eine Spule in Schwingung versetzt wird und diese Schwingung beim RX Modul verstärkt an dem Datenpin angelegt wird.
 Der XY-MK-5V ist ein Pendlerempfaenger, mit einer sehr geringen Reichweite. Ausserdem scheint er kein sauberes Signal zu liefern, so dass ein Sender in unmittelbarer Entfernung zum Empfänger stehen muss. Desweiteren braucht der Empfänger zwingen mehr als 3V Spannung, um zu funktionieren. 
 Besser sind hier Superheterodyne Empfänger die auch bei 3V saubere Ergebisse erzielen. Hervorrangend. der RXB14, dieser hat eine sehr kleine Bauform und arbeitet zuverlässig schon bei 3V und kann damit auch mit einer Knopfzelle betrieben werden. Der Verbrauch würde dabei bei ca. 6.88 mW liegen. Bei einer Kapazität einer Cr2032 von 0,22 Ah wären ein Betrieb von 95 Stunden also ca 4 Tagen Dauerbetrieb möglich.
 
+## Besonderheiten bei FastLED
+FastLED ist eine recht mächtige und unter allen Bibliotheken, die programmierbare Neopixel vom Typ WS281X LEDs ansteuern, bei dem Funktioneumfang die schnellste (siehe [Jake's Blog](https://blog.ja-ke.tech/2019/06/02/neopixel-performance.html))
 
-## Funktionserklärung rc-switch
+Ausserdem bietet es für AVR Prozessoren und damit auch dem ATTiny optimierte Algorithmen und auch eine Reihe von Util Funktionen, die speziell für 8Bit Prozessoren entwicklet wurden. Trotzdem ist die Bibliothek klein genug, um auf den Flash Speicher des ATtiny noch Platz für das eigene Programm zu lassen.
+
+### Interrupt Probleme
+Beim Schreiben von WS2812-Daten werden von FastLED Interrupts deaktiviert. Das bedeutet, dass während des Schreibens alle auftretenden Interrupts verzögert werden, bis der Schreibvorgang beendet ist. Pro WS2812-LED werden 30 µs fürs schreiben benötigt. 
+Für unser Projekt haben wir 23 LEDs im Einsatz = 690 µs = 0,7 ms.
+D.h. es wwerden für etwa 1ms alle Interups deaktiviert, auch die auf welcher die Fernbedienungssignale ankommen. 
+
+Das RX Modul empfängt Daten und löst diese nach dem Protokollen auf die hinterlegt sind. Da Standard Protokoll 1 zu sein scheint, beid en meisten Funkfernbedienungen sind alle anderen aus Speicherplatzgründen entferngt worden. Da diese nur Abwandlungen sind ist das für die Berechnung aber kein Problem. Da für jedes Bit 3 Impulse zur dekodierung verlangt werden und jeder Impulse 300-350µs lang sein darf würde ein Stop der Verarbeitung am Interupt PIN eine Lücke bei der Datenverarbeitung auslösen und die von der Fernbedienung empfangenen Daten können nicht mehr korrekt ausgewertet werden bzw. entspricht die Kopierdung nicht den erwarteten Werten.
+
+Ist das für das Projekt ein Problem?
+
+Wird während der Dekodierung des Fernbedienungssignals der LED Strip mit Daten versorgt geht die Information der Fernbedienung verloren. Solange aber zwischen dem Neusschreiben der Daten <code>FastLED.show()</code> immer ein delay eingebaut wurde der größer ist als die Dauer der Dekodierung und die Fernbedienung solange Daten sendet wie der Knopf gedrückt wird, sollte es immer ein Zeitfenster geben, an dem Teile der Fernbedienungsdaten korrekt interpretiert werden.
+
+Im Detail<br>
+![URH Diagramm](doc/URH-Signalview-Fernbedienung.png) 
+Pro bit werden zur Identifizierung 3 Impulse benötigt:<br> 
+= 32bit * 3 Impuse = 72 Impulse <br>
+= 33.600 us = 34 Millisekunden für ein Signal <br>
+zusätzlich noch die Pause zwischen den Signalen etwa 10 ms. In Summe demnach <b>43 ms</b> für ein komplettes Signal
+
+Würden fortlaufend LED Daten geschrieben oder der delay zwischen dem erneuten Schreiben der LED Daten wäre deutlich zu klein (< 50ms>) würden zu viele Signal nicht interpretiert werden können und die Fernbedienung ist wirkungslos oder macht den Eindruck nicht immer zu funktionieren. Das sollte man immer im Auge behalten wenn neue Animationen für den LED Strip erstellt werden die eine hohe fps erfordern. 
+
+
+## Funktionserklärung rc-switch und die Anpassungen
 ### ATtiny 
 Für den ATtiny wurden extra der Boolean RCSwitchDisableReceiving auf true gesetzt weil angeblich udivmodhi4 fehlt. Allerdings ist dies mit der ATtinycore lib auch nicht nötig. Es funktioniert also auch ohne. Aller dings muss die einbettung in das Interupt Magement geändert werden da der Arduino Befehl attachInterrupt hier nicht funktioniert. Also diese Zeile auskommentieren und RCSwitchDisableReceiving ebenso der Aufruf interruptChange(), da diesem beim ATtiny nicht gibt.
 
