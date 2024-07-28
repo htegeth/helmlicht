@@ -153,9 +153,9 @@ Im Detail<br>
 Pro bit werden zur Identifizierung 3 Impulse benötigt:<br> 
 = 32bit * 3 Impuse = 72 Impulse <br>
 = 33.600 us = 34 Millisekunden für ein Signal <br>
-zusätzlich noch die Pause zwischen den Signalen etwa 10 ms. In Summe demnach <b>43 ms</b> für ein komplettes Signal
+zusätzlich noch die Pause zwischen den Signalen etwa 4 ms. In Summe demnach <b>38 ms</b> für ein komplettes Signal
 
-Würden fortlaufend LED Daten geschrieben oder der delay zwischen dem erneuten Schreiben der LED Daten wäre deutlich zu klein (< 50ms>) würden zu viele Signal nicht interpretiert werden können und die Fernbedienung ist wirkungslos oder macht den Eindruck nicht immer zu funktionieren. Das sollte man immer im Auge behalten wenn neue Animationen für den LED Strip erstellt werden die eine hohe fps erfordern. 
+Würden fortlaufend LED Daten geschrieben oder der delay zwischen dem erneuten Schreiben der LED Daten wäre deutlich zu klein (<50ms>) würden zu viele Signal nicht interpretiert werden können und die Fernbedienung ist wirkungslos oder macht den Eindruck nicht immer zu funktionieren. Das sollte man immer im Auge behalten wenn neue Animationen für den LED Strip erstellt werden die eine hohe fps erfordern. 
 
 
 ## Funktionserklärung rc-switch und die Anpassungen
