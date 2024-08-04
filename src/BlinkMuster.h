@@ -6,7 +6,6 @@ class BlinkMuster
 {
      private:
         const byte fadeAmt = 128;
-        //const int cometSize = 1;
         const int8_t deltaHue  = 4;
 
 
@@ -36,23 +35,10 @@ class BlinkMuster
         void blinkRight();       
         void blinkLeft();
 
-        void setBlinkLeft();       
-        void setBlinkRight();
-
-        /**
-         * liefert false wenn die methode unterbrochen wurde
-        */
-        bool runleft();
-        /**
-         * liefert false wenn die methode unterbrochen wurde
-        */
-        bool runright();
-
-        void wawa();
 
         void drawComet();
-
         void drawKitt();
+        void drawMarqueeMirrored();
 
                 
 

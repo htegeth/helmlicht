@@ -68,7 +68,7 @@ void DrawTwinkle()
 
 void DrawMarqueeMirrored()
 {
-    static byte j = 0;
+    static byte j = 4;
     j+=4;
     byte k = j;
     

@@ -12,6 +12,7 @@
 #include <FastLED.h>
 #include "BlinkMuster.h"
 #include "Control.h"
+#include <EEPROM.h>
 
 #define INTERRUPT_PIN PCINT1 // Interupt ist PB1 gemäß dem Schaltplan
 #define INT_PIN PB1          // Interrupt-Pin nach Wahl: PB1 (wie PCINT1)
@@ -25,22 +26,29 @@
 boolean lightsOn = false;
 
 // Seltsam, wenn currentCode long ist, liefert  Control.hasCodeChanged() zu oft true. Bei typ int ist das kein Problem
-unsigned int lastCodeMain = 0;
 unsigned int currentCodeMain = 0;
 
 // Fernbedienungscodes. Ausgelesen über RCSwitch.getReceivedValue()
+//    _________ 
+//  |     =     |
+//  | (1)   (2) |
+//  |           | 
+//  | (3)   (4) |
+//  |           |
+//  |           |
+//    _________   
 const unsigned long taste1 = 753832;
 const unsigned long taste2 = 753828;
-const unsigned long taste3 = 605660;
-const unsigned long taste4 = 605665;
+const unsigned long taste3 = 753826;
+const unsigned long taste4 = 753825;
 
-byte started = false;
 RCSwitch mySwitch = RCSwitch();
 CRGB leds[NUM_LEDS];
 BlinkMuster blinker = BlinkMuster();
 
-const int8_t max_mode =1;
+//const int8_t max_mode =2;
 static int8_t mode = 0;
+static unsigned int lastTaste3Pressed=0;
 
 void beep(unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds)
 {
@@ -71,6 +79,7 @@ void setup()
   pinMode(INT_PIN, INPUT_PULLUP);
   mySwitch.enableReceive(0);
   sei();
+  mode=EEPROM.read(0);
 }
 
 void blinkControll(int times, int unsigned frequence)
@@ -96,7 +105,7 @@ void runBacklightAnimation(){
       blinker.drawComet();
       break;
     default:
-      blinker.drawKitt();
+      blinker.drawKitt();            
     }
     //TODO: 
     //full read
@@ -105,9 +114,10 @@ void runBacklightAnimation(){
 
 void loop()
 {
+
+
   if (mySwitch.available())
   {    
-    lastCodeMain=currentCodeMain;
     currentCodeMain = (int)mySwitch.getReceivedValue();       
     mySwitch.resetAvailable();
   }
@@ -115,11 +125,6 @@ void loop()
   switch (currentCodeMain)
   {
   case (int)taste1:
-    if(currentCodeMain==lastCodeMain){ // ausprobieren ob das nicht sofort dazu führt, dass der Blinker wieder ausgeht
-      currentCodeMain=0;
-      lastCodeMain=currentCodeMain;
-      break;
-    }
     tone(TONE_PIN, 150, 200);
     blinker.blinkLeft();
     break;
@@ -127,8 +132,12 @@ void loop()
     tone(TONE_PIN, 50, 200);
     blinker.blinkRight();
     break; 
-  case (int)taste3: // nächsten Blinkmode auswählen
-    if(++mode>max_mode) mode=0;
+  case (int)taste3: // nächsten Blinkmode auswählen    
+    if((millis()-lastTaste3Pressed) < 160 ) break;   //Bester Kompromiss um ein schnelles Switchen zu verhindern 
+    if(++mode>1) mode=0;     
+    currentCodeMain=0;
+    EEPROM.write(0,mode);
+    lastTaste3Pressed=millis();   
     break; 
   default:
     runBacklightAnimation();
