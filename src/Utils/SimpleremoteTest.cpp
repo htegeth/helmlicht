@@ -2,7 +2,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <atRcRwitch.h>
-#include "Control.h"
+
 
 #define INTERRUPT_PIN PCINT1     // Interupt ist PB1 gemäß dem Schaltplan
 #define INT_PIN PB1              // Interrupt-Pin nach Wahl: PB1 (wie PCINT1)
@@ -37,8 +37,7 @@ void blinkControll(uint8_t pin, int times, int unsigned frequence)
 {
   for (int i = 0; i < times; i++)
   {
-    if (Control::hasCodeChanged())
-      return;
+
     digitalWrite(pin, HIGH);
     delay(frequence);
     digitalWrite(pin, LOW);

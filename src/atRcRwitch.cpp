@@ -33,7 +33,6 @@
 */
 
 #include "atRcRwitch.h"
-#include "Control.h"
 
 
 #define RECEIVE_ATTR
@@ -323,9 +322,7 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
         }
     }
 
-    if (changeCount > 7) {    // ignore very short transmissions: no device sends them, so this must be noise
-        //The code has changed so the flag will change
-        Control::setCode(code);        
+    if (changeCount > 7) {    // ignore very short transmissions: no device sends them, so this must be noise    
         RCSwitch::nReceivedValue = code;
         RCSwitch::nReceivedBitlength = (changeCount - 1) / 2;
         RCSwitch::nReceivedDelay = delay;

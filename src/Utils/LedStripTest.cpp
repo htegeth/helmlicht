@@ -10,21 +10,69 @@
 CRGB leds[NUM_LEDS];
 
 #define NUM_COLORS 5
-static const CRGB TwinkleColors [NUM_COLORS] = 
-{
-    CRGB::Red,
-    CRGB::Blue,
-    CRGB::Purple,
-    CRGB::Green,
-    CRGB::Yellow
-};
+
 int g_Brightness = 255;   
+
+
+
+class Drawer{
+    private:
+    byte marqueeHue = 4;
+    int marqueeScroll = 0;
+
+
+    public:
+    void DrawTwinkle()
+    {
+        FastLED.clear(false);
+
+        const CRGB TwinkleColors [NUM_COLORS] = 
+        {
+            CRGB::Red,
+            CRGB::Blue,
+            CRGB::Purple,
+            CRGB::Green,
+            CRGB::Yellow
+        };
+
+        for (int i=0; i<NUM_LEDS/4; i++) 
+        {
+            leds[random(NUM_LEDS)] = TwinkleColors[random(0, NUM_COLORS)];
+            FastLED.show(g_Brightness);
+            delay(200);
+        }
+    }
+
+
+    void DrawMarqueeMirrored()
+    {        
+        (marqueeHue < 255) ? marqueeHue+=4:0;
+        byte newHue = marqueeHue;
+        
+        CRGB c;
+        for (int i = 0; i < (NUM_LEDS + 1) / 2; i ++)
+        {
+            leds[i].setHue(newHue).fadeToBlackBy(100);
+            leds[NUM_LEDS - 1 - i].setHue(newHue).fadeToBlackBy(100); 
+            // die set anweisung verbraucht entweder zuviel Speicher oder
+            // erzeugt einne Überlauf. deswegen im Hauptprogramm herausgenommen
+            (newHue < 255) ? newHue+=8: newHue=0;
+        }
+        
+        leds[random(NUM_LEDS)].setColorCode(CRGB::White).maximizeBrightness();                         
+    }
+};
+
+
+Drawer drawer;
 
 
 void setup() { 
     FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);  // GRB ordering is assumed
+    drawer = Drawer();
     
 }
+
 void DrawComet()
 {
     const byte fadeAmt = 128;
@@ -54,46 +102,6 @@ void DrawComet()
 
 
 
-void DrawTwinkle()
-{
-    FastLED.clear(false);
-
-    for (int i=0; i<NUM_LEDS/4; i++) 
-    {
-        leds[random(NUM_LEDS)] = TwinkleColors[random(0, NUM_COLORS)];
-        FastLED.show(g_Brightness);
-        delay(200);
-    }
-}
-
-void DrawMarqueeMirrored()
-{
-    static byte j = 4;
-    j+=4;
-    byte k = j;
-    
-    CRGB c;
-    for (int i = 0; i < (NUM_LEDS + 1) / 2; i ++)
-    {
-        leds[i] = c.setHue(k);
-        leds[NUM_LEDS - 1 - i] = c.setHue(k);
-        k+= 8;
-    }
-
-
-    static int scroll = 0;
-    scroll++;
-
-    for (int i = scroll % 5; i < NUM_LEDS / 2; i += 5)
-    {
-        leds[i] = CRGB::Black;
-        leds[NUM_LEDS - 1 - i] = CRGB::Black;
-    }   
-
-    delay(50);
-}
-
-
 void loop() { 
   // // Turn the LED on, then pause
   // leds[0] = CRGB::Red;
@@ -104,6 +112,11 @@ void loop() {
   // FastLED.show();
   // delay(500);
 
-  DrawMarqueeMirrored();
-  FastLED.show(50);
+ //DrawMarqueeMirrored();
+
+
+  drawer.DrawMarqueeMirrored();
+  delay(50);
+  //FastLED.setBrightness(20);
+  FastLED.show();
 }

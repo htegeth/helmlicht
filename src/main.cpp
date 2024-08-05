@@ -11,7 +11,6 @@
 #include <atRcRwitch.h>
 #include <FastLED.h>
 #include "BlinkMuster.h"
-#include "Control.h"
 #include <EEPROM.h>
 
 #define INTERRUPT_PIN PCINT1 // Interupt ist PB1 gemäß dem Schaltplan
@@ -22,6 +21,8 @@
 #define PCINT_VECTOR PCINT0_vect // This step is not necessary - it's a naming thing for clarit
 #define NUM_LEDS 23
 #define DATA_PIN 4
+
+#define MAX_MODES 5
 
 boolean lightsOn = false;
 
@@ -69,7 +70,6 @@ void setup()
   pinMode(TONE_PIN, OUTPUT);
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
   blinker.setLeds(leds);
-  blinker.setNumberLeds(NUM_LEDS);
   blinker.init();
   pinMode(LED_PIN, OUTPUT);
   pinMode(CONTROL_LED, OUTPUT);
@@ -104,8 +104,20 @@ void runBacklightAnimation(){
     case 1:
       blinker.drawComet();
       break;
+    case 2:
+      blinker.drawHollywood();
+      break;
+    case 3:
+      blinker.drawFullRed(0);
+      break;
+    case 4:
+      blinker.drawFullRed(150);
+      break;
+    case 5:
+      blinker.drawFullRed(200);
+      break;
     default:
-      blinker.drawKitt();            
+      blinker.drawKitt();                  
     }
     //TODO: 
     //full read
@@ -132,13 +144,15 @@ void loop()
     tone(TONE_PIN, 50, 200);
     blinker.blinkRight();
     break; 
-  case (int)taste3: // nächsten Blinkmode auswählen    
-    if((millis()-lastTaste3Pressed) < 160 ) break;   //Bester Kompromiss um ein schnelles Switchen zu verhindern 
-    if(++mode>1) mode=0;     
+  case (int)taste3: // nächsten Blinkmode auswählen       
+    if((millis()-lastTaste3Pressed) > 500 ){   
+      tone(TONE_PIN, 200, 50);
+      if(++mode>MAX_MODES) mode=0;     
+      EEPROM.write(0,mode);         
+    }
+    lastTaste3Pressed=millis();  
     currentCodeMain=0;
-    EEPROM.write(0,mode);
-    lastTaste3Pressed=millis();   
-    break; 
+    break;
   default:
     runBacklightAnimation();
     break;
