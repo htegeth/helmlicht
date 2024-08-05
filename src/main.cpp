@@ -23,7 +23,7 @@
 #define DATA_PIN 4
 
 // Anzhal der zulässigen maxmialmodes
-#define MAX_MODES 5
+#define MAX_MODES 4
 
 boolean lightsOn = false;
 
@@ -107,12 +107,9 @@ void runBacklightAnimation(){
       blinker.drawHollywood();
       break;
     case 3:
-      blinker.drawFullRed(0);
-      break;
-    case 4:
       blinker.drawFullRed(150);
-      break;
-    case 5:
+      break;   
+    case 4:
       blinker.drawFullRed(200);
       break;
     default:      
