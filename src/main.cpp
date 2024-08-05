@@ -22,6 +22,7 @@
 #define NUM_LEDS 23
 #define DATA_PIN 4
 
+// Anzhal der zulässigen maxmialmodes
 #define MAX_MODES 5
 
 boolean lightsOn = false;
@@ -47,7 +48,6 @@ RCSwitch mySwitch = RCSwitch();
 CRGB leds[NUM_LEDS];
 BlinkMuster blinker = BlinkMuster();
 
-//const int8_t max_mode =2;
 static int8_t mode = 0;
 static unsigned int lastTaste3Pressed=0;
 
@@ -116,18 +116,13 @@ void runBacklightAnimation(){
     case 5:
       blinker.drawFullRed(200);
       break;
-    default:
+    default:      
       blinker.drawKitt();                  
     }
-    //TODO: 
-    //full read
-    //dimming red LED
 }
 
 void loop()
 {
-
-
   if (mySwitch.available())
   {    
     currentCodeMain = (int)mySwitch.getReceivedValue();       
@@ -145,13 +140,13 @@ void loop()
     blinker.blinkRight();
     break; 
   case (int)taste3: // nächsten Blinkmode auswählen       
-    if((millis()-lastTaste3Pressed) > 500 ){   
+    if((millis()-lastTaste3Pressed) > 250 ){   
       tone(TONE_PIN, 200, 50);
-      if(++mode>MAX_MODES) mode=0;     
-      EEPROM.write(0,mode);         
+      if(++mode>MAX_MODES) mode=0;
+      EEPROM.write(0,mode);                                
     }
     lastTaste3Pressed=millis();  
-    currentCodeMain=0;
+    currentCodeMain=0;    
     break;
   default:
     runBacklightAnimation();
