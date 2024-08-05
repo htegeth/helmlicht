@@ -70,7 +70,6 @@ void setup()
   pinMode(TONE_PIN, OUTPUT);
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
   blinker.setLeds(leds);
-  blinker.init();
   pinMode(LED_PIN, OUTPUT);
   pinMode(CONTROL_LED, OUTPUT);
   cli();

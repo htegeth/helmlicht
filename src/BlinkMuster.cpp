@@ -10,43 +10,32 @@ void BlinkMuster::setLeds(CRGB *leds)
 }
 
 
-
-void BlinkMuster::init()
-{
-    ledFragment = NUM_LEDS / 3;
-    rightBegin = ledFragment;
-    leftBegin = NUM_LEDS - ledFragment;
-    blinkDelayMain = 500;
-    blinkDelaySub = blinkDelayMain / ledFragment;
-}
-
-
 void BlinkMuster::blinkLeft()
 {
     FastLED.clear();
     FastLED.show();
-    delay(blinkDelayMain);
-    for (int i = NUM_LEDS - ledFragment; i < NUM_LEDS; i++)
+    delay(BLINK_DELAY_MAIN);
+    for (int i = NUM_LEDS - LED_FRAGMENT; i < NUM_LEDS; i++)
     {
         leds[i] = CRGB::CRGB::CRGB::Orange;
         FastLED.show();
-        delay(blinkDelaySub);
+        delay(BLINK_DELAY_SUB);
     }
-    delay(blinkDelayMain);
+    delay(BLINK_DELAY_MAIN);
 }
 
 void BlinkMuster::blinkRight()
 {
     FastLED.clear();
     FastLED.show();
-    delay(blinkDelayMain);
-    for (int i = rightBegin - 1; i >= 0; i--)
+    delay(BLINK_DELAY_MAIN);
+    for (int i = RIGHT_BEGIN - 1; i >= 0; i--)
     {
         leds[i] = CRGB::CRGB::CRGB::Orange;
         FastLED.show();
-        delay(blinkDelaySub);
+        delay(BLINK_DELAY_SUB);
     }
-    delay(blinkDelayMain);
+    delay(BLINK_DELAY_MAIN);
 }
 
 
@@ -65,7 +54,7 @@ void BlinkMuster::drawComet()
     // Randomly fade the LEDs
     for (int j = 0; j < NUM_LEDS; j++)
         if (random(10) > 5)
-            leds[j] = leds[j].fadeToBlackBy(fadeAmt);
+            leds[j] = leds[j].fadeToBlackBy(FADEAMT);
     FastLED.show();
     delay(60);
 }

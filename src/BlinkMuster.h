@@ -1,23 +1,18 @@
 #include <FastLED.h>
 
-#define NUM_LEDS 23   
+#define NUM_LEDS 23
+#define LED_FRAGMENT NUM_LEDS / 3
+#define BLINK_DELAY_MAIN 500
+#define BLINK_DELAY_SUB BLINK_DELAY_MAIN / (LED_FRAGMENT*2)
+#define RIGHT_BEGIN LED_FRAGMENT
+#define FADEAMT 128
         
 class BlinkMuster
 {
-     private:
-        const byte fadeAmt = 128;
+     private:        
         const int8_t deltaHue  = 4;
-
-
-        //const int defaultDelay = 50;
-        const int runDelayTime = 50;       
+    
         CRGB* leds;
-        int8_t ledFragment = 0;
-        int8_t rightBegin = 0;
-        int8_t leftBegin = 0;
-        int blinkDelayMain = 0;
-        int blinkDelaySub = 0;
-
 
         byte hue = HUE_RED;
         int8_t iDirection = 1;
@@ -25,11 +20,12 @@ class BlinkMuster
 
         byte marqueeHue = 4;
 
+        byte fade = 0;
+
 
     public:
         BlinkMuster();
-        void setLeds(CRGB* leds);        
-        void init();       
+        void setLeds(CRGB* leds);               
        
         void blinkRight();       
         void blinkLeft();
