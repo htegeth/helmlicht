@@ -25,7 +25,9 @@ Magnete | Neodym Magnete 8x2mm| [amazon](https://www.amazon.de/dp/B0CPJ1GJKS)| 6
 JST Stecker |  Micro JST 1,25mm 2 Pin Male & Female| [aliexpress](https://de.aliexpress.com/item/1005004732865407.html)| 2,44€*
 PCB Board | PCB Board KitsDoppelseitig| [amazon](https://www.amazon.de/gp/product/B09NDNPF91)| 9,99€*
 Funkfernbedienung| Programmierbare Funkfernbedienung 433Mhz| [aliexpress](https://de.aliexpress.com/item/1005006065464456.html)| 3,09€
-Sonstiges|Kabel, Filament, Schrauben 
+Schrauben Lenkerklemme|2 Blechschrauben 3,5 x 19 Linsenkopf | [Baumarkt Bauhaus](https://www.bauhaus.info/blech-metall-spenglerschrauben/marinetech-blechschraube/p/23672451)| 0,42€
+Schrauben RC-Platte|2 Blechschrauben 3,5 x 13 Linsenkopf | [Baumarkt Bauhaus](https://www.bauhaus.info/blech-metall-spenglerschrauben/marinetech-blechschraube/p/23672442)| 0,36€
+Sonstiges|Verbindungskabel, Filament, Heiß- oder Sekundenkleber 
 *) Set oder Meterpreise (06/2024)
 
 
@@ -83,7 +85,7 @@ const unsigned long taste2 = 753828;
 const unsigned long taste3 = 605660;
 const unsigned long taste4 = 605665;
 ```
-muss die Fernbedienung programmiert werden. Um dies zu tun, wird eine weiteres Modul benötigt. Ein Sendemodul wie das MX-FS-03V reicht dafür aus. Zum Versenden kann der auch hier als Grundlage verwendet Code des Projektes rc-switch [rc-switch](https://github.com/sui77/rc-switch/) verwendet werden. Dazu kann man die Arduino IDE starten ein neues Skript öffnen und für <code>taste1</code> folgenden Code in den Sketch kopieren:
+Muss die Fernbedienung programmiert werden, wird eine weiteres Modul benötigt. Ein Sendemodul wie das MX-FS-03V (FS1000A) reicht dafür aus. Zum Versenden kann der auch hier als Grundlage verwendet Code des Projektes rc-switch [rc-switch](https://github.com/sui77/rc-switch/) verwendet werden. Dazu kann man die Arduino IDE starten ein neues Skript öffnen und für <code>taste1</code> folgenden Code in den Sketch kopieren:
 ```cpp
 #include <RCSwitch.h>
 
@@ -105,11 +107,23 @@ Anschließend im Sketch den Code der Taste ändern, auf den Arduino laden und di
 # Montage
 Für die Montage muss die Helmlicht Box ausgedruckt werden. Auch wenn PLA als Druckmatrial zunächst ausreicht wäre für den intensiven Outdoor Einsatz ASA eventuell geigneter. Allerdings ist der Deckel der Box nur verpresst montiert und nicht komplett wasserdicht. 
 
+## Lademodul und Schalter
+Den Schiebeschalter und das Lademodul mit Kabeln und Steckern verbinden. Der Lipo wird per JSP zweifachstecker verbunden und kann so gewechselt werden. Die Steuerungsplatine wird ebenfalls per Stecker verbunden. Das mancht das Mintieren einfacher. <br>
+Liegt die Box mit den LEDs zu einem zeigend, wird auf der linken Seite das Akku-Lademodul in die Ausparrung geklemmt. Dabei darauf achten, dass die Status LEDs des Lademoduls nach unten zeigen. Der Schiebeschalter wird mit den ausgedruckten Nieten an der Box verschmolzen. Dazu die Nieten durch die Montagelöcher schieben und mit einem Lötkolben von Aussen verschmelzen. Auf der Linken Seite sollte nun noch soviel Platz sein, dass der Akku so in den Raum gelegt werden kann, dass der Decke sich schließen lässt.
+
+## LED Streifen
+Der LED Strup wird auf 23 LEDs gekürzt. Die Anschlußpunkte lassen sich am besten auf der Rückseite mit einem Cuttermesser freikratzen und mit den drei Kabeln verbinden. Auf die Pfeile achten welche auf dem Strip aufgedruckt werden. Die Anschlußdrähte müssen auf die erste LED verlötet werden. Den Strip auf die Box kleben und die Kabel durch die Öffnung fädeln. Für den Besseren Halt und zur Abdurchtung die durchgefädelten Kabeln und den Strip an der Stelle mit Heißkleber fixieren.
+
+Der Strip kann sich auf der anderen Seite nach einiger Zeit wieder lösen wenn das KLebeband nicht zu gut haftet. ein Tropfen Sekundenkleber an der letzten Stelle behebt dieses Problem.
+
+## Steuerungsplatine
 Das PCB Board wird auf 18 Loch lang und 6 Loch hoch gekürzt. Es lässt sich zusägen oder es werden mit einem Cutter Messer die Bruchkanten eingeritzt um anschließend mit einer Zange die überstehenden Bereiche abzuknicken.
-Liegt die Box mit der Aussparrung nach vorne zeigend vor einem, wird auf der linken Seite das Akku-Lademodul in die Ausparrung geklemmt. Der Schiebeschalter wird mit den ausgedruckten Nieten an der Box verschmolzen. Dazu die Nieten durch die Montagelöcher schieben und mit einem Lötkolben von Aussen verschmelzen. Vorher den Schalter und das Lademodul mit Kabeln und Steckern verbinden. Auf der Linken Seite sollte nun noch soviel Platz sein, dass der Akku so in den Raum gelegt werden kann, dass der Decke sich schließen lässt.
+Anschließend den Sockel, den Buzzer und das RC Modelauflöten und verbindungen erstellen. Das PX Modul um 90° bieten, damit der Deckel auf die Box passt. Stromkabel mit JST Kabel anlöten. LED Kabel anlöten. Akku anschließen und Schiebeschalter umlegen, um den ersten Test durchzuführen.  
 
+## Magnete
+Die Magenet dienen lediglich dem besseren Halt der Kopfleute. In die runden Aussparrungen je einen Tropfen Sekundenkleber und die Magnete einsetzen.
 
-
+## Fernbedienungshalter
 
 # Utils
 ## BlickTest

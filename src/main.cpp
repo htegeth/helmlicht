@@ -39,10 +39,19 @@ unsigned int currentCodeMain = 0;
 //  |           |
 //  |           |
 //    _________   
-const unsigned long taste1 = 753832;
-const unsigned long taste2 = 753828;
-const unsigned long taste3 = 753826;
-const unsigned long taste4 = 753825;
+
+//Diese Werte sind default werte einer beliegten chinesischen programmierbaren Funk-Fernbedienung 433mHz
+// const unsigned long taste1 = 753832;
+// const unsigned long taste2 = 753828;
+// const unsigned long taste3 = 753826;
+// const unsigned long taste4 = 753825;
+
+//Diese Werte als 8bit Signale programmiert, sind deutlich besser durch den Tiny zu verarbeiten. 
+//Müssen aber in der Fernbedienung programmiert werden (RemoteProgramm.ino) am besten über die Arduino IDE
+const unsigned long taste1 = 3;
+const unsigned long taste2 = 5;
+const unsigned long taste3 = 10;
+const unsigned long taste4 = 20;
 
 RCSwitch mySwitch = RCSwitch();
 CRGB leds[NUM_LEDS];
@@ -139,7 +148,8 @@ void loop()
     if((millis()-lastTaste3Pressed) > 250 ){   
       tone(TONE_PIN, 200, 50);
       if(++mode>MAX_MODES) mode=0;
-      EEPROM.write(0,mode);                                
+      EEPROM.write(0,mode);
+      runBacklightAnimation();                                
     }
     lastTaste3Pressed=millis();  
     currentCodeMain=0;    
