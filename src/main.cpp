@@ -58,7 +58,7 @@ CRGB leds[NUM_LEDS];
 BlinkMuster blinker = BlinkMuster();
 
 static int8_t mode = 0;
-static unsigned int lastTaste3Pressed=0;
+static unsigned long lastTaste3Pressed=0;
 
 void beep(unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds)
 {
