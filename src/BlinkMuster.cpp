@@ -10,48 +10,49 @@ void BlinkMuster::setLeds(CRGB *leds)
 }
 
 
-void BlinkMuster::blinkLeft()
+void BlinkMuster::setBlinkLeft()
 {
-    FastLED.clear();
-    FastLED.show();
-    delay(BLINK_DELAY_MAIN);
-    for (int i = NUM_LEDS - LED_FRAGMENT; i < NUM_LEDS; i++)
+    int8_t blinkStartPosition = NUM_LEDS - LED_FRAGMENT;
+    if (iPos < blinkStartPosition || iPos == NUM_LEDS)
     {
-        leds[i] = CRGB::CRGB::CRGB::Orange;
+        FastLED.clear();
         FastLED.show();
-        delay(BLINK_DELAY_SUB);
+        iPos = blinkStartPosition;
+        tone(TONE_PIN, 150, 200);
+        delay(700);
     }
-    delay(BLINK_DELAY_MAIN);
+    leds[iPos++].setHue(HUE_ORANGE);
+    FastLED.show();
+    delay(100);
 }
 
-void BlinkMuster::blinkRight()
+void BlinkMuster::setBlinkRight()
 {
-    FastLED.clear();
-    FastLED.show();
-    delay(BLINK_DELAY_MAIN);
-    for (int i = RIGHT_BEGIN - 1; i >= 0; i--)
+    if (iPos >= LED_FRAGMENT || iPos < 0)
     {
-        leds[i] = CRGB::CRGB::CRGB::Orange;
+        FastLED.clear();
         FastLED.show();
-        delay(BLINK_DELAY_SUB);
+        delay(150);
+        iPos = RIGHT_BEGIN;
+        tone(TONE_PIN, 50, 200);
+        delay(700);
     }
-    delay(BLINK_DELAY_MAIN);
+    leds[iPos--].setHue(HUE_ORANGE);
+    FastLED.show();
+    delay(100);
 }
-
-
 
 void BlinkMuster::drawComet()
 {
-    int cometSize = 1;
     hue += deltaHue;
     iPos += iDirection;
-    if (iPos == (NUM_LEDS - cometSize) || iPos == 0)
+    if (iPos == (NUM_LEDS - COMET_SIZE) || iPos == 0)
         iDirection *= -1;
 
-    for (int i = 0; i < cometSize; i++)
+    for (int i = 0; i < COMET_SIZE; i++)
         leds[iPos + i].setHue(hue);
 
-    // Randomly fade the LEDs
+    // Zufälliges Ausblenden der LEDs
     for (int j = 0; j < NUM_LEDS; j++)
         if (random(10) > 5)
             leds[j] = leds[j].fadeToBlackBy(FADEAMT);

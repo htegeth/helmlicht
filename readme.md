@@ -124,14 +124,46 @@ Anschließend den Sockel, den Buzzer und das RC Modelauflöten und verbindungen 
 Die Magenet dienen lediglich dem besseren Halt der Kopfleute. In die runden Aussparrungen je einen Tropfen Sekundenkleber und die Magnete einsetzen.
 
 ## Fernbedienungshalter
+Der Halter für die fernbedienung der an den Lenker des Fahrrades montiert werden kann, ist im Grunde eine Schale in der die Fernbedienung eingeklemmt wird. Dadurch ist diese auch leicht wieder
+zu entfernen und der Halter insgesamt recht einfach aufgebaut.
 
-# Utils
+Der Halter besteht auch der Schale, der Montageplate und dem Gegenstück. Die Datei Bedienungshalter-Horiz-Druck.3mf enthält die horizontale Version, die sich am besten bewährt hat. 
+Der Lenker sollte an der Stelle einen Durchmesser von mind. 20mm und max 25mm haben.
+
+<img src="doc/Remotehalter-Teile.jpg" width=700>
+
+ZUerst die Halterung am Lenker schrauben. Dazu die 3,5x19 Blechschrauben verwenden. Dannach mit den 3,5x13 Beclschrauben die Halterplatte festschrauben. Die Fernbedienung nun einfach eindrücken.
+Als Material für den Druck war hier PLA ausreichen. Wer mehr UV Stabilität benötigt kann andere Materialen ausprobieren, ggf. muss hier mit der Skalierung nachgesteuert werden wenn die Fernbedienung nicht passt. 
+
+<img src="doc/RemotehalterMontiert.jpg" width=700>
+
+Wer eine andere Fernbedienung hat, kann dafür einen andere Grundplatte herstellen. Die Rohdaten sind alle im Ordner [/3dPrint/Remote](./3dPrint/Remote/) vorhanden. Zur Konstruktion wurde die Community Editon von Siemens [Solid Edge](https://resources.sw.siemens.com/de-DE/download-solid-edge-community-edition) verwendet.
+
+
+# Environments Utils
+Unter dem Ordner Util sind alternative Main-Methoden, die ich für die Entwicklung und den Test der Konstruktion genutzt habe. Insbesondere wenn man noch nie eine ATtiny programmiert hat oder auch den Arduino nicht besonders gut kennt ist es sinnvoll erst einmal zu schauen, ob die Grundlegenden Dinge funktionieren.
+
+Default ist die Environment auf Attiny_Helmlicht gestellt. Damit wird das Hauptprogramm deployt. Um den Default zu ändern muss im VS Code in der IDE unten auf die Einstellung klicken und eine andere Enrironment wählen: 
+
+<img src="doc/Enviroment-Button.png" width=300>
+
 ## BlickTest
-Um den Arduino der eingesetzt werden soll zu testen wird dieses simple Programm verwendet. Es steuert eine LED an und lästs diese Blinken. Dies ist ein Smoketest, ob der 
-eingesetzt Prozessor funktioniert hinsichtlich Programmierung, Ausführung und Ansteuerung
+Um den Attiny, der eingesetzt werden soll, zu testen wird dieses simple Programm verwendet. Es steuert eine LED an und lästs diese Blinken. Dies ist ein Smoketest, ob der 
+eingesetzte Mikrocontroller, bzw ob die Programmierung, Ausführung und Ansteuerung mit visual Studio funktioniert.
 
-## RemoteDecoder
-Für das Programm werden zwei LEDs und ein 433RX Board benötigt. Zusätzlich noch eine Fernbedienung. Es dient dazu die Codes der Funkfernbedienung auszulesen und zwar so wie der ATTiny diese mit der lib RCSwitch interpretiert. 
+## SimpleremoteTest
+dieser Aufbau benötigt zwei LEDs um zu testen, ob das Empfängermodul funktioniert. Das kann man auch dann schon nutzen, ohne den restlichen Aufbau bereitzustellen. Es war für mich auch ein PoC, ob es mit dem ATtiny überhaupt möglich ist einen Blinker umzustetzen. 
+
+## LedStripTest
+Hier habe ich verschiedene Blinkmuster ausprobiert. Nicht alles was so im Netz gezeigt wird geht auch auf dem ATtiny. Ausserdem haben wir einen sehr limentierten Speicher was den Sourcecode angeht. Bei meinem letzten Build waren es nur noch 18%, den man für zusätzlichen Code hätte verwenden können. Der ATtiny hat nur 8Kb Flash, der mit dem FastLED dem angepassten RCSwitch schon gut gefüllt ist.
+
+# Ausblick
+Einige Ideen habe ich noch im Kopf aber noch nicht verwirklicht. 
+- So hatte ich vor den "Black" Mode noch als Blinkmuster aufzunehmen. Dass leuchtet nur der Blinker.
+- den Fernbedienungshalter so konstruieren, dass die Fernbedienung diebstahl sicher eingesetzt werden kann
+- Der Sound wurde ursprünglich für ein Piezo Element entworfen und klingt bei einem Buzzer oder Summer natürlich anderes. Statt eines Buzzers / Signalgebers kann auch eine Piezoscheibe an die Bix geklebt werden und die verkabelung wie bei dem verbauten Buzzer erfolgen. In der Blinkpause könnte so statt des schrägen Tons könnte eine einsekündige Melodie gespielt werden
+- Die Bauhöhe ist vor allem durch den 8Pin Sockel erhöht worden. Es passt zwar alles noch in den Helm, ist aber trotzdem ein wenig gequetscht. Den Sockel habe ich gewählt um das fertig Teil noch nachträglich neu programmieren zu können. Ginge auch anderes, mit vier Pins an denen die MOSI, MISO, SCK und Reset Leitungen angeschlossen werden. Strom bekäme der Tiny durch den Akku. Oder man wählt gleich einen anderen Attiny
+- Ein anderer ATtiny. Der 85 hat den Vorteil, dass der in DIP Bauform lieferbar ist. Damit kann er einfach auf einem Perf-Board montriert werden. Oder so wie ich es gemacht habe in einen Socket gesteckt werde kann. Es gibt aber auch neuere Modelle mit mehr Flash und der Möglichkeit nur über einen PIN programmiert zu werden. Diese gibt es aber nur noch als SOIC Bauform.
 
 # Tipps und Hintergrund
 ## Timings und Clock

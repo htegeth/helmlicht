@@ -1,6 +1,6 @@
 #include <Arduino.h>
 // Smoketest
-// Einfacher Ardduino Blink Sketch um zu testen, ob der Build, der Programmer des ATtiny und der ATtiny selbst funktionieren.
+// Einfacher Arduino Blink Sketch um zu testen, ob der Build, der Programmer des ATtiny und der ATtiny selbst funktionieren.
 //
 
 //                                 +-\/-+

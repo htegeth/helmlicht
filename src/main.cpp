@@ -17,7 +17,6 @@
 #define INT_PIN PB1          // Interrupt-Pin nach Wahl: PB1 (wie PCINT1)
 #define LED_PIN PB3          // LED für das Feedback für enfnagene Nachrichten
 #define CONTROL_LED PB2      // LED um anzuzeigen welcher Knopf der Fernbedienung gedrückt wurde
-#define TONE_PIN 0
 #define PCINT_VECTOR PCINT0_vect // This step is not necessary - it's a naming thing for clarit
 #define NUM_LEDS 23
 #define DATA_PIN 4
@@ -137,12 +136,14 @@ void loop()
   switch (currentCodeMain)
   {
   case (int)taste1:
-    tone(TONE_PIN, 150, 200);
-    blinker.blinkLeft();
+    //tone(TONE_PIN, 150, 200);
+    //blinker.blinkLeft();
+    blinker.setBlinkLeft();
     break;
   case (int)taste2:
-    tone(TONE_PIN, 50, 200);
-    blinker.blinkRight();
+    // tone(TONE_PIN, 50, 200);
+    // blinker.blinkRight();
+    blinker.setBlinkRight();
     break; 
   case (int)taste3: // nächsten Blinkmode auswählen       
     if((millis()-lastTaste3Pressed) > 250 ){   
