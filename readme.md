@@ -5,6 +5,8 @@ Um das Umzusetzen, habe ich eine Box für die Ausparung im Helm als 3D Modell ko
 
 Mit einer programmierbaren 433Mhz Standardfernbedienung wird das Rücklicht angesteuert und die Fahrrichtung durch Blinken angezeigt. Der Summer gibt das Feedback an den Fahrer, dass der Blinker an ist.
 
+Wer das Projekt umsetzen will benötigt eine PC mit installiertem Visual Studio Code, einen Arduino, einen 3D Drucker und das unten aufgeführte Zubehör.
+
 
 <img src="doc/Vorfuehrung_Offstreet-Tiny.gif" width=700>
 
@@ -77,7 +79,9 @@ Wenn das alles erfolgreich war kann der Code den Mircocontroller hochgeladen wer
 Im Terminal sollte der Upload mit Status SUCCESS beendet werden.
 
 # Fernbedienung
-Als Steuerung des Helmlichtes wird eine programmierbare 433Mhz (oder 315Mhz - in DE obsolet)  Fernbedienung verwendet. In der Regel werden diese Fernbedienungen schon vorprogrammiert geliefert. Ist dies nicht der Fall oder der Fernbedienungscode ein anderer als im Sourcecode der <code>Main.class</code> hinterlegt:
+<img src="doc/RemoteDraw.png" width=200>
+
+Als Steuerung des Helmlichtes wird eine programmierbare 433Mhz (oder 315Mhz - in DE obsolet)  Fernbedienung verwendet. Jeder der vier Knöpfe hat einen eigenen Code der programmiert, also unter Vorlage eines Referenzcodes "erlernt" werden kann.  In der Regel werden diese Fernbedienungen schon vorprogrammiert geliefert. Hier als Beispiel der Code der in der Stückliste aufgeführten Fernbedienung: 
 ```cpp
 // Fernbedienungscodes. Ausgelesen über RCSwitch.getReceivedValue()
 const unsigned long taste1 = 753832;
@@ -85,7 +89,7 @@ const unsigned long taste2 = 753828;
 const unsigned long taste3 = 605660;
 const unsigned long taste4 = 605665;
 ```
-Muss die Fernbedienung programmiert werden, wird eine weiteres Modul benötigt. Ein Sendemodul wie das MX-FS-03V (FS1000A) reicht dafür aus. Zum Versenden kann der auch hier als Grundlage verwendet Code des Projektes rc-switch [rc-switch](https://github.com/sui77/rc-switch/) verwendet werden. Dazu kann man die Arduino IDE starten ein neues Skript öffnen und für <code>taste1</code> folgenden Code in den Sketch kopieren:
+Ist die Fernbedienung nicht vorprogrammiert oder der Fernbedienungscode ein anderer als im Sourcecode der <code>Main.class</code> hinterlegt, muss die Fernbedienung programmiert werden. Ein Sendemodul wie das MX-FS-03V (FS1000A) reicht dafür aus. Zum Versenden kann der auch hier als Grundlage verwendet Code des Projektes rc-switch [rc-switch](https://github.com/sui77/rc-switch/) verwendet werden. Dazu kann man die Arduino IDE starten ein neues Skript öffnen und für <code>taste1</code> folgenden Code in den Sketch kopieren:
 ```cpp
 #include <RCSwitch.h>
 
@@ -124,11 +128,11 @@ Anschließend den Sockel, den Buzzer und das RC Modelauflöten und verbindungen 
 Die Magenet dienen lediglich dem besseren Halt der Kopfleute. In die runden Aussparrungen je einen Tropfen Sekundenkleber und die Magnete einsetzen.
 
 ## Fernbedienungshalter
-Der Halter für die fernbedienung der an den Lenker des Fahrrades montiert werden kann, ist im Grunde eine Schale in der die Fernbedienung eingeklemmt wird. Dadurch ist diese auch leicht wieder
-zu entfernen und der Halter insgesamt recht einfach aufgebaut.
+Der Halter für die fernbedienung der an den Lenker des Fahrrades montiert werden kann, ist im Grunde eine Schale in der die Fernbedienung eingeklemmt wird. Dadurch ist diese auch leicht wieder zu entfernen und der Halter insgesamt recht einfach aufgebaut.
 
-Der Halter besteht auch der Schale, der Montageplate und dem Gegenstück. Die Datei Bedienungshalter-Horiz-Druck.3mf enthält die horizontale Version, die sich am besten bewährt hat. 
-Der Lenker sollte an der Stelle einen Durchmesser von mind. 20mm und max 25mm haben.
+Der Halter besteht aus der Schale, der Montageplatte und dem Gegenstück. Die Datei Bedienungshalter-Horiz-Druck.3mf enthält die horizontale Version, die sich am besten bewährt hat. Der Lenker sollte an der Stelle einen Durchmesser von mind. 20mm und max 25mm haben.
+
+Dazu muss die Datei ./3dPrint/PrintFiles/Bedienungshalter-*-Druck.3mf ausgedruckt werden. Ob Horizontal (was mir mehr entgegen kommt) oder Vertikal ist Platz und Beschmackssache.
 
 <img src="doc/Remotehalter-Teile.jpg" width=700>
 
