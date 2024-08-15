@@ -1,11 +1,9 @@
 
 # Helmlicht
-Der Fahrradhelm Modell Hud-Y von Abus ähneln dem eines Roboterkopfes. Als Fan von Filmen wie Robocop defenitiv ein Kaufgrund. Die Helme dieses Modells haben ein Rücklicht integriert, das Leuchten und Blinken kann und das entfernt werden kann! Doch wenn man schon einen Robotorhelm hat und ein Rücklicht vorhanden ist, warum soll es dann nicht aussehen wie die "Augen" der Zylonen aus Battlestar Galactica? Und das Rücklicht könnte auch beim Abbiegen blinken, so wie es Motorräder oder Autos machen.
-Um das Umzusetzen, habe ich eine Box für die Ausparung im Helm als 3D Modell konstruiert, in dem ein ATtiny85 arbeitet. Dieser steuert einen WS2812B LED Strip, einen Piezo Summer und lässt sich über ein 433Mhz Empfängermodul steuern.
+Der Fahrradhelm Modell Hud-Y von Abus ähneln dem eines Roboterkopfes. Als Fan von Filmen wie Robocop defenitiv ein Kaufgrund. Die Helme dieses Modells haben ein Rücklicht integriert, das Leuchten und Blinken kann und das entfernt werden kann! Doch wenn man schon einen Roboterhelm hat und ein Rücklicht vorhanden ist, warum soll es dann nicht aussehen wie die "Augen" der Zylonen aus Battlestar Galactica? Und das Rücklicht könnte auch beim Abbiegen blinken, so wie es Motorräder oder Autos machen.
+Um das Umzusetzen, habe ich eine Box für die Aussparung im Helm als 3D Modell konstruiert, in dem ein ATtiny85 arbeitet. Dieser steuert einen WS2812B LED Strip, einen Piezo Summer und lässt sich über eine 433Mhz Funkfernbedienung steuern.
 
-Mit einer programmierbaren 433Mhz Standardfernbedienung wird das Rücklicht angesteuert und die Fahrrichtung durch Blinken angezeigt. Der Summer gibt das Feedback an den Fahrer, dass der Blinker an ist.
-
-Wer das Projekt umsetzen will benötigt eine PC mit installiertem Visual Studio Code, einen Arduino, einen 3D Drucker und das unten aufgeführte Zubehör.
+Wer das Projekt umsetzen will benötigt einen PC mit installiertem Visual Studio Code, einen Arduino, einen 3D Drucker, ein Lötkolben und das unten aufgeführte Matrial.
 
 
 <img src="doc/Vorfuehrung_Offstreet-Tiny.gif" width=700>
@@ -35,7 +33,7 @@ Sonstiges|Verbindungskabel, Filament, Heiß- oder Sekundenkleber
 
 <img src="doc/PartOverview.jpg" width=700><img src="doc/LED-Strip.jpg" width=700>
 
-Ausserdem sind noch ein 3D-Drucker und ein Lötkolben erforderlich.
+
 
 # Programmierung
 Für die Programmierung des ATtiny benötigt man ein Programmiergerät oder ein Arduino Board. Setzt man den Attiny auf ein Breadboard und verwendte den Arduino als ISP Programmer, können an den Anschlüssen des Attiny zugleich auch die später zu verbauenden Module getestet werden. Es ist nicht notwenig, den LED Strip, das Funkmodul oder auch den Piezo Summer beim Programmieren zu entfernen. Lässt man alles verbaut kann soft man will die Programmierung wiederholt werden. 
