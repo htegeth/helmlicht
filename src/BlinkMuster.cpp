@@ -9,7 +9,6 @@ void BlinkMuster::setLeds(CRGB *leds)
     this->leds = leds;
 }
 
-
 void BlinkMuster::setBlinkLeft()
 {
     int8_t blinkStartPosition = NUM_LEDS - LED_FRAGMENT;
@@ -61,7 +60,13 @@ void BlinkMuster::drawComet()
 }
 
 void BlinkMuster::drawKitt()
-{
+{    
+    //Reset, falls die Positionswerte und die Direction nicht mehr passen
+    if (iPos> NUM_LEDS || iPos< 0 || abs(iDirection)!= 1)
+    {
+        iPos=0;
+        iDirection=1;
+    }
     iPos += iDirection;
     if (iPos == (NUM_LEDS - 1) || iPos == 0)
         iDirection *= -1;

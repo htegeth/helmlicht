@@ -34,7 +34,6 @@ class BlinkMuster
 
         void setBlinkLeft();
         void setBlinkRight();
-
                 
 
 };

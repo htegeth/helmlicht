@@ -39,18 +39,11 @@ unsigned int currentCodeMain = 0;
 //  |           |
 //    _________   
 
-//Diese Werte sind default werte einer beliegten chinesischen programmierbaren Funk-Fernbedienung 433mHz
-// const unsigned long taste1 = 753832;
-// const unsigned long taste2 = 753828;
-// const unsigned long taste3 = 753826;
-// const unsigned long taste4 = 753825;
-
-//Diese Werte als 8bit Signale programmiert, sind deutlich besser durch den Tiny zu verarbeiten. 
-//Müssen aber in der Fernbedienung programmiert werden (RemoteProgramm.ino) am besten über die Arduino IDE
-const unsigned long taste1 = 3;
-const unsigned long taste2 = 5;
-const unsigned long taste3 = 10;
-const unsigned long taste4 = 20;
+//Diese Werte werden durch die Build Paramter von platfomio.ini gesetzt.
+const unsigned long taste1 = TASTE1_CODE;
+const unsigned long taste2 = TASTE2_CODE;
+const unsigned long taste3 = TASTE3_CODE;
+const unsigned long taste4 = TASTE4_CODE;
 
 RCSwitch mySwitch = RCSwitch();
 CRGB leds[NUM_LEDS];
@@ -136,13 +129,9 @@ void loop()
   switch (currentCodeMain)
   {
   case (int)taste1:
-    //tone(TONE_PIN, 150, 200);
-    //blinker.blinkLeft();
     blinker.setBlinkLeft();
     break;
   case (int)taste2:
-    // tone(TONE_PIN, 50, 200);
-    // blinker.blinkRight();
     blinker.setBlinkRight();
     break; 
   case (int)taste3: // nächsten Blinkmode auswählen       

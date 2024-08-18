@@ -1,7 +1,7 @@
 
 # Helmlicht
-Der Fahrradhelm Modell Hud-Y von Abus ähneln dem eines Roboterkopfes. Als Fan von Filmen wie Robocop defenitiv ein Kaufgrund. Die Helme dieses Modells haben ein Rücklicht integriert, das Leuchten und Blinken kann und das entfernt werden kann! Doch wenn man schon einen Robotorhelm hat und ein Rücklicht vorhanden ist, warum soll es dann nicht aussehen wie die "Augen" der Zylonen aus Battlestar Galactica? Und das Rücklicht könnte auch beim Abbiegen blinken, so wie es Motorräder oder Autos machen.
-Um das Umzusetzen, habe ich eine Box für die Ausparung im Helm als 3D Modell konstruiert, in dem ein ATtiny85 arbeitet. Dieser steuert einen WS2812B LED Strip, einen Piezo Summer und lässt sich über ein 433Mhz Empfängermodul steuern.
+Der Fahrradhelm Modell Hud-Y von Abus ähnelt dem eines Roboterkopfes. Als Fan von Filmen wie Robocop definitiv ein Kaufgrund. Die Helme dieses Modells haben ein Rücklicht integriert, das Leuchten und Blinken kann und das vom Helm entfernt werden kann! Doch wenn man schon einen Robotorhelm hat und ein Rücklicht vorhanden ist, warum soll es dann nicht aussehen wie die "Augen" der Zylonen aus Battlestar Galactica? Und das Rücklicht könnte auch beim Abbiegen blinken, so wie es Motorräder oder Autos machen.
+Um das umzusetzen, habe ich eine Box für die Aussparung im Helm als 3D Modell konstruiert, in dem ein ATtiny85 arbeitet. Dieser steuert einen WS2812B LED Strip, einen Piezo Summer und lässt sich über ein 433Mhz Empfängermodul steuern.
 
 Mit einer programmierbaren 433Mhz Standardfernbedienung wird das Rücklicht angesteuert und die Fahrrichtung durch Blinken angezeigt. Der Summer gibt das Feedback an den Fahrer, dass der Blinker an ist.
 
@@ -36,17 +36,19 @@ Sonstiges|Verbindungskabel, Filament, Heiß- oder Sekundenkleber
 Ausserdem sind noch ein 3D-Drucker und ein Lötkolben erforderlich.
 
 # Programmierung
-Für die Programmierung des ATtiny benötigt man ein Programmiergerät oder ein Arduino Board. Setzt man den Attiny auf ein Breadboard und verwendte den Arduino als ISP Programmer, können an den Anschlüssen des Attiny zugleich auch die später zu verbauenden Module getestet werden. Es ist nicht notwenig, den LED Strip, das Funkmodul oder auch den Piezo Summer beim Programmieren zu entfernen. Lässt man alles verbaut kann soft man will die Programmierung wiederholt werden. 
+Die Programmierung des ATtiny erfolgt über [Visual Studio Code](https://code.visualstudio.com/download) und dem Plugin [Platformio](https://platformio.org/). Über <code>Platformio::Upload</code> wird der ATtiny über den Arduino programmiert, der vorher als ISP programmiert wurde.
+
+Für die Programmierung des ATtiny benötigt man ein Programmiergerät oder ein Arduino Board. Setzt man den ATtiny auf ein Breadboard und verwendet den Arduino als ISP Programmer, können an den Anschlüssen des ATtiny zugleich auch die später zu verbauenden Module getestet werden. Es ist nicht notwendig, den LED Strip, das Funkmodul oder auch den Piezo Summer beim Programmieren zu entfernen. Lässt man alles verbaut, kann soft man will die Programmierung wiederholen. 
 
 1. Vorbereitung des Arduino als ISP Programmer
 2. Setzen der Fuse des ATtiny 
 3. Build und Upload des Codes
 
-## Vorbedreitung des Arduino Boards und des ATtiny
+## Vorbereitung des Arduino Boards und des ATtiny
 Der Code um den Arduino als ISP nutzen zu können ist Teil der Examples der Arduino IDE: https://www.arduino.cc/en/software
 Dazu wird das Arduino Board über USB mit dem Rechner verbunden, und mit dem Skript File/Examples/11.ArduinoISP programmiert ([Arduino Examples](https://docs.arduino.cc/built-in-examples/arduino-isp/ArduinoISP/))
 
-Der Ardino wird bemäß Pin Layout angeschlossen:
+Der Arduino wird gemäß Pin Layout angeschlossen:
 
 <img src="doc/ISP-Schaltung.png" width=700>
 
@@ -67,17 +69,19 @@ Nachdem der Arduino als ISP programmiert wurde, kann die Arduino IDE geschlossen
 - Fuse Einstellung für den ATTiny85
 - Upload durchführen
 
-In der Ini-Datei platmormio.ini wird nun die Kofiguration für den ATTiny85 eingetragen wie in [platfomio.org ](https://docs.platformio.org/en/latest/boards/atmelavr/attiny85.html#) beschrieben. Für das Projekt sind bereits alle notwendige Einstellungen festgelegt worden. Lediglich der Port muss noch eingetragen werden der bei Windows im Gerätemanager unter Ports zu finden ist und bei Linux über <code>ls /dev/tty*</code> angezeigt wird.
+In der Ini-Datei platmormio.ini wird nun die Konfiguration für den ATTiny85 eingetragen wie in [platfomio.org ](https://docs.platformio.org/en/latest/boards/atmelavr/attiny85.html#) beschrieben. Für das Projekt sind bereits alle notwendige Einstellungen festgelegt worden. Lediglich der Port muss noch eingetragen werden der bei Windows im Gerätemanager unter Ports zu finden ist und bei Linux über <code>ls /dev/tty*</code> angezeigt wird.
 
-Der ATtiny muss bei 8Mhz betrieben werden sonst versagt die FastLED Bibliothek ihren Dienst. Damit trotzdem das Timing korrekt funktfunktioniert muss der CKDIV8=0 deaktiviert sein. Dazu wird die lfuse auf 0xE2 gesetzt. Um diesen Wert zu setzen muss unter
-<code>PLATFORMIO(Ameisenkopf linke Steuerungsleiste)/Platform/ Set Fuse</code> per Klick ausgeführt werden.
+Der ATtiny muss bei 8Mhz betrieben werden sonst versagt die FastLED Bibliothek ihren Dienst. Damit trotzdem das Timing korrekt funktioniert muss der <code>CKDIV8=0</code> deaktiviert sein. Dazu wird die lfuse auf <code>0xE2</code> gesetzt. Um diesen Wert zu setzen muss unter
+PLATFORMIO(Ameisenkopf linke Steuerungsleiste)/Platform/ Set Fuses per Klick ausgeführt werden.
 
-Wenn das alles erfolgreich war kann der Code den Mircocontroller hochgeladen werden. Dazu auf den winzigen Pfeil nach rechts ganz unten klicken.
+<img src="doc/setFuse.png" width=350>
+
+Wenn das alles erfolgreich war kann der Code für den Mikrocontroller hochgeladen werden. Dazu auf den winzigen Pfeil nach rechts ganz unten klicken.
 
 Im Terminal sollte der Upload mit Status SUCCESS beendet werden.
 
 # Fernbedienung
-Als Steuerung des Helmlichtes wird eine programmierbare 433Mhz (oder 315Mhz - in DE obsolet)  Fernbedienung verwendet. In der Regel werden diese Fernbedienungen schon vorprogrammiert geliefert. Ist dies nicht der Fall oder der Fernbedienungscode ein anderer als im Sourcecode der <code>Main.class</code> hinterlegt:
+Als Steuerung des Helmlichtes wird eine programmierbare 433Mhz (oder 315Mhz - in DE aber obsolet) Fernbedienung verwendet. In der Regel werden diese Fernbedienungen schon vorprogrammiert geliefert. Bei dem Model das in der Stückliste angegeben wurde liegt folgender Code vor:
 ```cpp
 // Fernbedienungscodes. Ausgelesen über RCSwitch.getReceivedValue()
 const unsigned long taste1 = 753832;
@@ -85,6 +89,15 @@ const unsigned long taste2 = 753828;
 const unsigned long taste3 = 605660;
 const unsigned long taste4 = 605665;
 ```
+Das kann aber auch nur an einer Produktionslinie liegen und ein paar Chargen später sieht der Code andres aus. Übrigens sind die original Codes in der main.class auskommentiert, sie sind einfach "zu lang". Wer die Fernbedienung nicht programmieren will muss diese Zeilen wieder einkommentieren und die darunter liegenden auskommentieren.
+
+## Fernbedienungscode auslesen
+Um zu überprüfen, ob der Code der Fernbedienung mit dem Programm passt, kann das Skript [TestRemote.ino](./src/Utils/TestRemote/TestRemote.ino) verwendet werden. Es gibt kein Environment in diesem Projekt um das Skript zu starten, statt dessen kann die [Arduino IDE](https://www.arduino.cc/en/software/) verwendet werden. Vor dem ausführen muss die Bibliothek rc-switch noch installiert werden:
+
+<img src="doc/arduino-lib-manager.png" width=350>
+Anschließend das Skript auf den Arduino hochladen und den Serien Monitor starten.
+
+
 Muss die Fernbedienung programmiert werden, wird eine weiteres Modul benötigt. Ein Sendemodul wie das MX-FS-03V (FS1000A) reicht dafür aus. Zum Versenden kann der auch hier als Grundlage verwendet Code des Projektes rc-switch [rc-switch](https://github.com/sui77/rc-switch/) verwendet werden. Dazu kann man die Arduino IDE starten ein neues Skript öffnen und für <code>taste1</code> folgenden Code in den Sketch kopieren:
 ```cpp
 #include <RCSwitch.h>
