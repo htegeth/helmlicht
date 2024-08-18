@@ -3,7 +3,7 @@
 Der Fahrradhelm Modell Hud-Y von Abus ähnelt dem eines Roboterkopfes. Als Fan von Filmen wie Robocop definitiv ein Kaufgrund. Die Helme dieses Modells haben ein Rücklicht integriert, das Leuchten und Blinken kann und das vom Helm entfernt werden kann! Doch wenn man schon einen Robotorhelm hat und ein Rücklicht vorhanden ist, warum soll es dann nicht aussehen wie die "Augen" der Zylonen aus Battlestar Galactica? Und das Rücklicht könnte auch beim Abbiegen blinken, so wie es Motorräder oder Autos machen.
 Um das umzusetzen, habe ich eine Box für die Aussparung im Helm als 3D Modell konstruiert, in dem ein ATtiny85 arbeitet. Dieser steuert einen WS2812B LED Strip, einen Piezo Summer und lässt sich über ein 433Mhz Empfängermodul steuern.
 
-Mit einer programmierbaren 433Mhz Standardfernbedienung wird das Rücklicht angesteuert und die Fahrrichtung durch Blinken angezeigt. Der Summer gibt das Feedback an den Fahrer, dass der Blinker an ist.
+Wer das Projekt umsetzen will benötigt einen PC mit installiertem Visual Studio Code, einen Arduino, einen 3D Drucker, ein Lötkolben und das unten aufgeführte Matrial.
 
 
 <img src="doc/Vorfuehrung_Offstreet-Tiny.gif" width=700>
@@ -33,7 +33,7 @@ Sonstiges|Verbindungskabel, Filament, Heiß- oder Sekundenkleber
 
 <img src="doc/PartOverview.jpg" width=700><img src="doc/LED-Strip.jpg" width=700>
 
-Ausserdem sind noch ein 3D-Drucker und ein Lötkolben erforderlich.
+
 
 # Programmierung
 Die Programmierung des ATtiny erfolgt über [Visual Studio Code](https://code.visualstudio.com/download) und dem Plugin [Platformio](https://platformio.org/). Über <code>Platformio::Upload</code> wird der ATtiny über den Arduino programmiert, der vorher als ISP programmiert wurde.
@@ -137,11 +137,11 @@ Anschließend den Sockel, den Buzzer und das RC Modelauflöten und verbindungen 
 Die Magenet dienen lediglich dem besseren Halt der Kopfleute. In die runden Aussparrungen je einen Tropfen Sekundenkleber und die Magnete einsetzen.
 
 ## Fernbedienungshalter
-Der Halter für die fernbedienung der an den Lenker des Fahrrades montiert werden kann, ist im Grunde eine Schale in der die Fernbedienung eingeklemmt wird. Dadurch ist diese auch leicht wieder
-zu entfernen und der Halter insgesamt recht einfach aufgebaut.
+Der Halter für die fernbedienung der an den Lenker des Fahrrades montiert werden kann, ist im Grunde eine Schale in der die Fernbedienung eingeklemmt wird. Dadurch ist diese auch leicht wieder zu entfernen und der Halter insgesamt recht einfach aufgebaut.
 
-Der Halter besteht auch der Schale, der Montageplate und dem Gegenstück. Die Datei Bedienungshalter-Horiz-Druck.3mf enthält die horizontale Version, die sich am besten bewährt hat. 
-Der Lenker sollte an der Stelle einen Durchmesser von mind. 20mm und max 25mm haben.
+Der Halter besteht aus der Schale, der Montageplatte und dem Gegenstück. Die Datei Bedienungshalter-Horiz-Druck.3mf enthält die horizontale Version, die sich am besten bewährt hat. Der Lenker sollte an der Stelle einen Durchmesser von mind. 20mm und max 25mm haben.
+
+Dazu muss die Datei ./3dPrint/PrintFiles/Bedienungshalter-*-Druck.3mf ausgedruckt werden. Ob Horizontal (was mir mehr entgegen kommt) oder Vertikal ist Platz und Beschmackssache.
 
 <img src="doc/Remotehalter-Teile.jpg" width=700>
 
