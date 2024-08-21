@@ -1,9 +1,9 @@
 
 # Helmlicht
-Der Fahrradhelm Modell Hud-Y von Abus ähnelt dem eines Roboterkopfes. Als Fan von Filmen wie Robocop definitiv ein Kaufgrund. Die Helme dieses Modells haben ein Rücklicht integriert, das Leuchten und Blinken kann und das vom Helm entfernt werden kann! Doch wenn man schon einen Robotorhelm hat und ein Rücklicht vorhanden ist, warum soll es dann nicht aussehen wie die "Augen" der Zylonen aus Battlestar Galactica? Und das Rücklicht könnte auch beim Abbiegen blinken, so wie es Motorräder oder Autos machen.
+Der Fahrradhelm Modell Hud-Y von Abus ähnelt dem eines Roboterkopfes. Als Fan von Filmen wie Robocop definitiv ein Kaufgrund. Die Helme dieses Modells haben ein Rücklicht integriert, das leuchtet und blinkt und das vom Helm entfernt werden kann! Doch wenn man schon einen Robotorhelm hat und ein Rücklicht vorhanden ist, warum soll es dann nicht aussehen wie die "Augen" der Zylonen aus Battlestar Galactica? Und das Rücklicht könnte auch beim Abbiegen blinken, so wie es Motorräder oder Autos machen.
 Um das umzusetzen, habe ich eine Box für die Aussparung im Helm als 3D Modell konstruiert, in dem ein ATtiny85 arbeitet. Dieser steuert einen WS2812B LED Strip, einen Piezo Summer und lässt sich über ein 433Mhz Empfängermodul steuern.
 
-Wer das Projekt umsetzen will benötigt einen PC mit installiertem Visual Studio Code, einen Arduino, einen 3D Drucker, ein Lötkolben und das unten aufgeführte Matrial.
+Wer das Projekt umsetzen will benötigt einen PC mit installiertem Visual Studio Code, einen Arduino, einen 3D Drucker, ein Lötkolben und das unten aufgeführte Material.
 
 
 <img src="doc/Vorfuehrung_Offstreet-Tiny.gif" width=700>
@@ -13,7 +13,7 @@ Wer das Projekt umsetzen will benötigt einen PC mit installiertem Visual Studio
 Folgende Teile werden verbaut:
 Bauteil               | Beschreibung | Quelle | Kosten
 --------              |--------------|------- | -----
-Mikroprozessor  | ATTINY 85-20 PU      | [reichelt](https://www.reichelt.de/8-bit-attiny-avr-risc-mikrocontroller-8-kb-20-mhz-dip-8-attiny-85-20-pu-p69299.html) | 1,70€
+Mikroprozessor  | ATtiny 85-20 PU      | [reichelt](https://www.reichelt.de/8-bit-attiny-avr-risc-mikrocontroller-8-kb-20-mhz-dip-8-attiny-85-20-pu-p69299.html) | 1,70€
 IC-Sockel             | GS 8P IC-Sockel, 8-polig| [reichelt](https://www.reichelt.de/ic-sockel-8-polig-superflach-gedreht-gs-8p-p8231.html) | 0,30€
 Piezo Speaker         | DC-Signalgeber, 85dB | [reichelt](https://www.reichelt.de/dc-signalgeber-85db-2300-hz-3-v-pb12n23mpw03aq-p360872.html)| 0,92€
 433Mhz Receiver | 433Mhz Superheterodyne RXB14| [ebay](https://www.ebay.de/itm/263855073600?var=563220548601)|1,19€
@@ -38,11 +38,7 @@ Sonstiges|Verbindungskabel, Filament, Heiß- oder Sekundenkleber
 # Programmierung
 Die Programmierung des ATtiny erfolgt über [Visual Studio Code](https://code.visualstudio.com/download) und dem Plugin [Platformio](https://platformio.org/). Über <code>Platformio::Upload</code> wird der ATtiny über den Arduino programmiert, der vorher als ISP programmiert wurde.
 
-Für die Programmierung des ATtiny benötigt man ein Programmiergerät oder ein Arduino Board. Setzt man den ATtiny auf ein Breadboard und verwendet den Arduino als ISP Programmer, können an den Anschlüssen des ATtiny zugleich auch die später zu verbauenden Module getestet werden. Es ist nicht notwendig, den LED Strip, das Funkmodul oder auch den Piezo Summer beim Programmieren zu entfernen. Lässt man alles verbaut, kann soft man will die Programmierung wiederholen. 
-
-1. Vorbereitung des Arduino als ISP Programmer
-2. Setzen der Fuse des ATtiny 
-3. Build und Upload des Codes
+Für die Programmierung des ATtiny benötigt man ein Programmiergerät oder ein Arduino Board. Setzt man den ATtiny auf ein Breadboard und verwendet den Arduino als ISP Programmer, können an den Anschlüssen des ATtiny zugleich auch die später zu verbauenden Module getestet werden. Es ist nicht notwendig, den LED Strip, das Funkmodul oder auch den Piezo Summer beim Programmieren zu entfernen. Lässt man alles verbaut, kann man so oft man will die Programmierung wiederholen. 
 
 ## Vorbereitung des Arduino Boards und des ATtiny
 Der Code um den Arduino als ISP nutzen zu können ist Teil der Examples der Arduino IDE: https://www.arduino.cc/en/software
@@ -54,25 +50,25 @@ Der Arduino wird gemäß Pin Layout angeschlossen:
 
 Nicht vergessen: Sollte der Arduino erneut programmiert werden muss der Kondensator entfernt werden.
 
-Falls direkt getestet werden soll ob die Schaltung auf korrekt programmiert wurde können alle später verbauten Teile angeschlossen werden um die Korrektheit zu prüfen.
+Falls direkt getestet werden soll, ob die Schaltung korrekt programmiert wurde, können alle später verbauten Module auf dem Breadboard mit Jumperkabel angeschlossen werden, um die Funktion zu prüfen (siehe Bild unten).
 
 <img src="doc/ISP-Schaltung-Teststand.png" width=700>
 
 Der angeschlossene Piezo Buzzer wird jetzt beim Programmiervorgang einige Geräusche machen. Davon sollte man sich nicht irritieren lassen, der Programmiervorgang wird trotzdem erfolgreich sein.
 
 ## Programmierung über PlatformIO
-Nachdem der Arduino als ISP programmiert wurde, kann die Arduino IDE geschlossen werden. Sie wird im Projekt nicht mehr benötigt. Statt dessen wird Visual Studio Code eingesetzt mit dem Plugin PlatformIO.
+Nachdem der Arduino als ISP programmiert wurde, kann die Arduino IDE geschlossen werden. Sie wird im Projekt nicht mehr benötigt. Statt dessen wird Visual Studio Code eingesetzt mit dem Plugin PlatformIO. Folgende Schritte sind in der Reihenfolge auszuführen:
 - Download und install von [VS Code](https://code.visualstudio.com/download)
 - PlatformIO IDE als Plugin installieren
 - Arduino für Visual Studio Code als Plugin installieren
-- Korrekten Port einstellen und in platformio.ini unter upload_port eintragen
-- Fuse Einstellung für den ATTiny85
-- Upload durchführen
+- Port des angeschlossene ISP-Arduinos in platformio.ini unter <code>upload_port</code> eintragen
+- Fuse Einstellung für den ATTiny85 setzen über Project tasks/.../Set Fuses (s.u.) 
+- Upload durchführen (s.u.)
 
 In der Ini-Datei platmormio.ini wird nun die Konfiguration für den ATTiny85 eingetragen wie in [platfomio.org ](https://docs.platformio.org/en/latest/boards/atmelavr/attiny85.html#) beschrieben. Für das Projekt sind bereits alle notwendige Einstellungen festgelegt worden. Lediglich der Port muss noch eingetragen werden der bei Windows im Gerätemanager unter Ports zu finden ist und bei Linux über <code>ls /dev/tty*</code> angezeigt wird.
 
-Der ATtiny muss bei 8Mhz betrieben werden sonst versagt die FastLED Bibliothek ihren Dienst. Damit trotzdem das Timing korrekt funktioniert muss der <code>CKDIV8=0</code> deaktiviert sein. Dazu wird die lfuse auf <code>0xE2</code> gesetzt. Um diesen Wert zu setzen muss unter
-PLATFORMIO(Ameisenkopf linke Steuerungsleiste)/Platform/ Set Fuses per Klick ausgeführt werden.
+Der ATtiny muss bei 8Mhz betrieben werden sonst versagt die FastLED Bibliothek ihren Dienst. Damit trotzdem das Timing korrekt funktioniert muss die CKDIV8-Fuse mit dem Wert <code>CKDIV8=0</code> deaktiviert sein. Dazu wird die lfuse auf <code>0xE2</code> gesetzt. Um diesen Wert zu setzen muss unter
+PLATFORMIO(Ameisenkopf linke Steuerungsleiste)/Project tasks/Platform/Attiny_Helmlich/Set Fuses per Klick ausgeführt werden.
 
 <img src="doc/setFuse.png" width=350>
 
@@ -81,24 +77,24 @@ Wenn das alles erfolgreich war kann der Code für den Mikrocontroller hochgelade
 Im Terminal sollte der Upload mit Status SUCCESS beendet werden.
 
 # Fernbedienung
-Als Steuerung des Helmlichtes wird eine programmierbare 433Mhz (oder 315Mhz - in DE aber obsolet) Fernbedienung verwendet. In der Regel werden diese Fernbedienungen schon vorprogrammiert geliefert. Bei dem Model das in der Stückliste angegeben wurde liegt folgender Code vor:
-```cpp
-// Fernbedienungscodes. Ausgelesen über RCSwitch.getReceivedValue()
-const unsigned long taste1 = 753832;
-const unsigned long taste2 = 753828;
-const unsigned long taste3 = 605660;
-const unsigned long taste4 = 605665;
-```
-Das kann aber auch nur an einer Produktionslinie liegen und ein paar Chargen später sieht der Code andres aus. Übrigens sind die original Codes in der main.class auskommentiert, sie sind einfach "zu lang". Wer die Fernbedienung nicht programmieren will muss diese Zeilen wieder einkommentieren und die darunter liegenden auskommentieren.
+<img src="doc/RemoteDraw.png" width=150>
+
+Als Steuerung des Helmlichtes wird eine programmierbare 433Mhz (oder 315Mhz - in DE aber obsolet) Fernbedienung verwendet. In der Regel werden diese Fernbedienungen schon vorprogrammiert geliefert. Bei dem Model, das in der Stückliste angegeben wurde, liegt folgender Code vor:
+- Taste 1 = 753832;
+- Taste 2 = 753828;
+- Taste 3 = 753826;
+- Taste 4 = 753825;
+
+Das kann aber bei der nächsten Produktionslinie schon wieder anderes aussehen. Wer feststellt, dass die Fernbedienung nicht funktioniert sollte den Code auslesen. Wie das geht ist unten beschrieben. Auch wer einen anderen, vielleicht kürzeren, Code möchte kann diesen in der platform.ini unter <code>build_flags</code> eintragen.
 
 ## Fernbedienungscode auslesen
-Um zu überprüfen, ob der Code der Fernbedienung mit dem Programm passt, kann das Skript [TestRemote.ino](./src/Utils/TestRemote/TestRemote.ino) verwendet werden. Es gibt kein Environment in diesem Projekt um das Skript zu starten, statt dessen kann die [Arduino IDE](https://www.arduino.cc/en/software/) verwendet werden. Vor dem ausführen muss die Bibliothek rc-switch noch installiert werden:
+Um zu überprüfen, ob der Code der Fernbedienung mit dem Programm passt, kann das Skript [TestRemote.ino](./src/Utils/TestRemote/TestRemote.ino) verwendet werden. Es gibt kein Environment in diesem Projekt, um das Skript zu starten, statt dessen kann die [Arduino IDE](https://www.arduino.cc/en/software/) verwendet werden. Vor dem ausführen muss die Bibliothek rc-switch noch installiert werden:
 
 <img src="doc/arduino-lib-manager.png" width=350>
 Anschließend das Skript auf den Arduino hochladen und den Serien Monitor starten.
 
 
-Muss die Fernbedienung programmiert werden, wird eine weiteres Modul benötigt. Ein Sendemodul wie das MX-FS-03V (FS1000A) reicht dafür aus. Zum Versenden kann der auch hier als Grundlage verwendet Code des Projektes rc-switch [rc-switch](https://github.com/sui77/rc-switch/) verwendet werden. Dazu kann man die Arduino IDE starten ein neues Skript öffnen und für <code>taste1</code> folgenden Code in den Sketch kopieren:
+Soll die Fernbedienung programmiert werden, wird ein weiteres Modul benötigt. Ein Sendemodul wie das MX-FS-03V (FS1000A) reicht dafür aus. Zum senden kann der  hier als Grundlage verwendet Code des Projektes rc-switch [rc-switch](https://github.com/sui77/rc-switch/) verwendet werden. Dazu die Arduino IDE starten, ein neues Skript öffnen und für <code>taste1</code> folgenden Code in den Sketch kopieren:
 ```cpp
 #include <RCSwitch.h>
 
@@ -114,30 +110,31 @@ void loop() {
   mySwitch.send(753832, 24);
 }
 ```
-Den Arduino nun starten und die Fernbedienung den Code lernen lassen. Bei den meisten aus China stammenden lernenden Fernbedienungen muss dazu in der Lernvorgang gestartet werden z.B. durch gleichzeitiges Drücken der Taste A und B bis die Bestätigungs LED dreimal blinkt anschließend B drücken. Dannach die Fernbedienung in die Nähe des Sendemoduls halten und den gewünschten Knopf solange gedrückt halten bis aus dem Blinken der Kontrol-LED ein Flackern geworden ist.
-Anschließend im Sketch den Code der Taste ändern, auf den Arduino laden und die nächste Taste gedrückt halten.
+Den Arduino nun starten und die Fernbedienung den Code lernen lassen. Bei den meisten aus China stammenden lernenden Fernbedienungen muss dazu in der Lernvorgang gestartet werden z.B. durch gleichzeitiges Drücken der Taste (1) und (2) bis die Fernbedienungs-LED dreimal blinkt. Anschließend (2) drücken. Danach die Fernbedienung in die Nähe des Sendemoduls halten und den gewünschten Knopf (1-4) solange gedrückt halten, bis aus dem Blinken der LED ein Flackern geworden ist.
+Anschließend im Sketch den Code auf die nächste zu programmierende Taste ändern, auf den Arduino laden und die Taste gedrückt halten, welche programmiert werden soll usw.
 
 # Montage
-Für die Montage muss die Helmlicht Box ausgedruckt werden. Auch wenn PLA als Druckmatrial zunächst ausreicht wäre für den intensiven Outdoor Einsatz ASA eventuell geigneter. Allerdings ist der Deckel der Box nur verpresst montiert und nicht komplett wasserdicht. 
+<img src="doc/Wiring.jpg" width=700>
+Für die Montage muss die Helmlicht Box ausgedruckt werden. Auch wenn PLA als Druckmatrial zunächst ausreicht wäre für den intensiven Outdoor Einsatz ASA eventuell geeigneter. Der Deckel der Box wird nur verpresst und ist nicht komplett wasserdicht. 
 
 ## Lademodul und Schalter
-Den Schiebeschalter und das Lademodul mit Kabeln und Steckern verbinden. Der Lipo wird per JSP zweifachstecker verbunden und kann so gewechselt werden. Die Steuerungsplatine wird ebenfalls per Stecker verbunden. Das mancht das Mintieren einfacher. <br>
-Liegt die Box mit den LEDs zu einem zeigend, wird auf der linken Seite das Akku-Lademodul in die Ausparrung geklemmt. Dabei darauf achten, dass die Status LEDs des Lademoduls nach unten zeigen. Der Schiebeschalter wird mit den ausgedruckten Nieten an der Box verschmolzen. Dazu die Nieten durch die Montagelöcher schieben und mit einem Lötkolben von Aussen verschmelzen. Auf der Linken Seite sollte nun noch soviel Platz sein, dass der Akku so in den Raum gelegt werden kann, dass der Decke sich schließen lässt.
+Den Schiebeschalter und das Lademodul mit Kabeln und Steckern verbinden. Der LiPo Akku wird per JSP-Zweifachstecker verlötet und kann so gewechselt werden. Die Steuerungsplatine wird ebenfalls per Stecker verbunden. Das macht das montieren und austauschen einfacher. <br>
+Liegt die Box mit den LEDs zu einem zeigend, wird auf der linken Seite das Akku-Lademodul in die Aussparung geklemmt. Dabei darauf achten, dass die Status LEDs des Lademoduls nach unten zeigen. Der Schiebeschalter wird mit den ausgedruckten Nieten an der Box verschmolzen. Dazu die Nieten durch die Montagelöcher schieben und mit einem Lötkolben von aussen verschmelzen. Auf der Linken Seite sollte nun noch soviel Platz sein, dass der Akku so in den Platz gelegt werden kann, dass der Deckel sich schließen lässt.
 
 ## LED Streifen
-Der LED Strup wird auf 23 LEDs gekürzt. Die Anschlußpunkte lassen sich am besten auf der Rückseite mit einem Cuttermesser freikratzen und mit den drei Kabeln verbinden. Auf die Pfeile achten welche auf dem Strip aufgedruckt werden. Die Anschlußdrähte müssen auf die erste LED verlötet werden. Den Strip auf die Box kleben und die Kabel durch die Öffnung fädeln. Für den Besseren Halt und zur Abdurchtung die durchgefädelten Kabeln und den Strip an der Stelle mit Heißkleber fixieren.
-
-Der Strip kann sich auf der anderen Seite nach einiger Zeit wieder lösen wenn das KLebeband nicht zu gut haftet. ein Tropfen Sekundenkleber an der letzten Stelle behebt dieses Problem.
+Der LED Strip wird auf 23 LEDs gekürzt. Die Anschlusspunkte lassen sich am besten auf der Rückseite mit einem Cuttermesser freikratzen und mit den drei Kabeln verbinden. Auf die Pfeile achten welche auf dem Strip aufgedruckt werden. Die Anschlussdrähte müssen auf die erste LED verlötet werden. Den Strip auf die Box kleben und die Kabel durch die Öffnung fädeln. Für den besseren Halt und zur Abdichtung und Isolierung, die durchgefädelten Kabel und den Strip an der Stelle mit Heißkleber fixieren.
+<img src="doc/CableEntry.jpg" width=350>
+Der Strip kann sich auf der anderen Seite nach einiger Zeit wieder lösen wenn das KLebeband nicht gut haftet. Ein Tropfen Sekundenkleber an der letzten Stelle behebt dieses Problem.
 
 ## Steuerungsplatine
 Das PCB Board wird auf 18 Loch lang und 6 Loch hoch gekürzt. Es lässt sich zusägen oder es werden mit einem Cutter Messer die Bruchkanten eingeritzt um anschließend mit einer Zange die überstehenden Bereiche abzuknicken.
 Anschließend den Sockel, den Buzzer und das RC Modelauflöten und verbindungen erstellen. Das PX Modul um 90° bieten, damit der Deckel auf die Box passt. Stromkabel mit JST Kabel anlöten. LED Kabel anlöten. Akku anschließen und Schiebeschalter umlegen, um den ersten Test durchzuführen.  
 
 ## Magnete
-Die Magenet dienen lediglich dem besseren Halt der Kopfleute. In die runden Aussparrungen je einen Tropfen Sekundenkleber und die Magnete einsetzen.
+Die Magnete dienen lediglich dem besseren Halt des Helmlichtes. In die runden Aussparungen je einen Tropfen Sekundenkleber und die Magnete einsetzen.
 
 ## Fernbedienungshalter
-Der Halter für die fernbedienung der an den Lenker des Fahrrades montiert werden kann, ist im Grunde eine Schale in der die Fernbedienung eingeklemmt wird. Dadurch ist diese auch leicht wieder zu entfernen und der Halter insgesamt recht einfach aufgebaut.
+Der Halter für die fernbedienung, der an den Lenker des Fahrrades montiert werden kann, ist im Grunde eine Schale in der die Fernbedienung eingeklemmt wird. Dadurch ist diese auch leicht wieder zu entfernen und der Halter insgesamt recht einfach aufgebaut.
 
 Der Halter besteht aus der Schale, der Montageplatte und dem Gegenstück. Die Datei Bedienungshalter-Horiz-Druck.3mf enthält die horizontale Version, die sich am besten bewährt hat. Der Lenker sollte an der Stelle einen Durchmesser von mind. 20mm und max 25mm haben.
 
