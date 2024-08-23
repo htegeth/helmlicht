@@ -183,7 +183,7 @@ eingesetzte Mikrocontroller, bzw ob die Programmierung, Ausführung und Ansteuer
 dieser Aufbau benötigt zwei LEDs um zu testen, ob das Empfängermodul funktioniert. Das kann man auch dann schon nutzen, ohne den restlichen Aufbau bereitzustellen. Es war für mich auch ein PoC, ob es mit dem ATtiny überhaupt möglich ist einen Blinker umzustetzen. 
 
 ## LedStripTest
-Hier habe ich verschiedene Blinkmuster ausprobiert. Nicht alles was so im Netz gezeigt wird geht auch auf dem ATtiny. Ausserdem haben wir einen sehr limitierten Speicher was den Sourcecode angeht. Bei meinem letzten Build waren es nur noch 18%, den man für zusätzlichen Code hätte verwenden können. Der ATtiny hat nur 8Kb Flash, der mit dem FastLED dem angepassten RCSwitch schon gut gefüllt ist.
+Hier habe ich verschiedene Blinkmuster ausprobiert. Nicht alles was so im Netz gezeigt wird geht auch auf dem ATtiny. Ausserdem haben wir einen sehr limitierten Speicher was den Sourcecode angeht. Bei meinem letzten Build waren es nur noch 18%, den man für zusätzlichen Code hätte verwenden können. Der ATtiny85 hat nur 8Kb Flash, der mit dem FastLED dem angepassten RCSwitch schon gut gefüllt ist.
 
 ## Ausblick
 Einige Ideen habe ich noch im Kopf aber noch nicht verwirklicht. 
