@@ -58,7 +58,7 @@ Der angeschlossene Piezo Buzzer wird jetzt beim Programmiervorgang einige Geräu
 
 ## Programmierung über PlatformIO
 Nachdem der Arduino als ISP programmiert wurde, kann die Arduino IDE geschlossen werden. Sie wird im Projekt nicht mehr benötigt. Statt dessen wird Visual Studio Code eingesetzt mit dem Plugin PlatformIO. Folgende Schritte sind in der Reihenfolge auszuführen:
-- Download und install von [VS Code](https://code.visualstudio.com/download)
+- Download und Installation von [VS Code](https://code.visualstudio.com/download)
 - PlatformIO IDE als Plugin installieren
 - Arduino für Visual Studio Code als Plugin installieren
 - Port des angeschlossene ISP-Arduinos in platformio.ini unter <code>upload_port</code> eintragen
@@ -128,17 +128,17 @@ Der Strip kann sich auf der anderen Seite nach einiger Zeit wieder lösen wenn d
 
 ## Steuerungsplatine
 Das PCB Board wird auf 18 Loch lang und 6 Loch hoch gekürzt. Es lässt sich zusägen oder es werden mit einem Cutter Messer die Bruchkanten eingeritzt um anschließend mit einer Zange die überstehenden Bereiche abzuknicken.
-Anschließend den Sockel, den Buzzer und das RC Modelauflöten und verbindungen erstellen. Das PX Modul um 90° bieten, damit der Deckel auf die Box passt. Stromkabel mit JST Kabel anlöten. LED Kabel anlöten. Akku anschließen und Schiebeschalter umlegen, um den ersten Test durchzuführen.  
+Anschließend den Sockel, den Buzzer und das RC Modelauflöten und die Lötverbindungen herstellen. Das PX Modul um 90° biegen, damit der Deckel auf die Box passt. Stromkabel mit JST Kabel anlöten. LED Kabel anlöten, den Akku anschließen und den Schiebeschalter umlegen, um den ersten Test durchzuführen.  
 
 ## Magnete
 Die Magnete dienen lediglich dem besseren Halt des Helmlichtes. In die runden Aussparungen je einen Tropfen Sekundenkleber und die Magnete einsetzen.
 
 ## Fernbedienungshalter
-Der Halter für die fernbedienung, der an den Lenker des Fahrrades montiert werden kann, ist im Grunde eine Schale in der die Fernbedienung eingeklemmt wird. Dadurch ist diese auch leicht wieder zu entfernen und der Halter insgesamt recht einfach aufgebaut.
+Der Halter für die Fernbedienung, der an den Lenker des Fahrrades montiert werden kann, ist eine Schale in der die Fernbedienung eingeklemmt wird. Dadurch ist diese auch leicht wieder zu entfernen und der Halter insgesamt recht einfach aufgebaut. Um den Halter an dem Lenker zu befestigen, werden die 13 und 19 mm langen Blechschrauben verwendet.
 
-Der Halter besteht aus der Schale, der Montageplatte und dem Gegenstück. Die Datei Bedienungshalter-Horiz-Druck.3mf enthält die horizontale Version, die sich am besten bewährt hat. Der Lenker sollte an der Stelle einen Durchmesser von mind. 20mm und max 25mm haben.
+Der Halter besteht aus der Schale, der Montageplatte und dem Gegenstück. Die Datei Bedienungshalter-Horiz-Druck.3mf enthält die horizontale Version, die sich am besten bewährt hat. Der Lenker sollte an der Stelle einen Durchmesser von mind. 20mm und max 25mm haben. 
 
-Dazu muss die Datei ./3dPrint/PrintFiles/Bedienungshalter-*-Druck.3mf ausgedruckt werden. Ob Horizontal (was mir mehr entgegen kommt) oder Vertikal ist Platz und Beschmackssache.
+Dazu muss die Datei ./3dPrint/PrintFiles/Bedienungshalter-*-Druck.3mf ausgedruckt werden. Ob Horizontal (was mir mehr entgegen kommt) oder Vertikal ist Platz und Geschmackssache.
 
 <img src="doc/Remotehalter-Teile.jpg" width=700>
 
