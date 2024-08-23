@@ -232,7 +232,7 @@ zusätzlich noch die Pause zwischen den Signalen etwa 4 ms. In Summe demnach <b>
 
 Würden fortlaufend LED Daten geschrieben oder der delay zwischen dem erneuten Schreiben der LED Daten wäre deutlich zu klein (<50ms>) würden zu viele Signal nicht interpretiert werden können und die Fernbedienung ist wirkungslos oder macht den Eindruck nicht immer zu funktionieren. Das sollte man immer im Auge behalten wenn neue Animationen für den LED Strip erstellt werden, die eine hohe fps erfordern.
 
-Eine Lösung könnte der Einsatz von kürzeren, als 8bit kodierten Signalen sein, die mehr Signallücken bei einer Sendesequenz haben. Ich habe das auch ausprobiert, konnte aber, mit den aktuell eingesetzten Animationen,  bei der Reaktionsfähigkeit des Helmlichtes keinen Unterschied feststellen. 
+Eine Lösung könnte der Einsatz von kürzeren, als 8bit kodierten Signalen sein, die mehr Signallücken bei einer Sendesequenz haben. Ich habe das auch ausprobiert, konnte aber, mit den aktuell eingesetzten Animationen,  bei der Reaktionsfähigkeit des Helmlichts keinen Unterschied feststellen. 
 
 
 ## Funktionserklärung rc-switch und die Anpassungen
