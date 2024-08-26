@@ -25,7 +25,7 @@ Lipo Akku| 3,7 V 150-300mAh Lipo-Batterien mit PCM| [aliexpress](https://de.alie
 LED Strip| WS2812 144LEDs/meter Schwarz IP65, 12mm| [amazon](https://www.amazon.de/dp/B088JPLP2H)| 15,99€*
 Magnete | Neodym Magnete 8x2mm| [amazon](https://www.amazon.de/dp/B0CPJ1GJKS)| 6,99€*
 JST Stecker |  Micro JST 1,25mm 2 Pin Male & Female| [aliexpress](https://de.aliexpress.com/item/1005004732865407.html)| 2,44€*
-PCB Board | PCB Board KitsDoppelseitig| [amazon](https://www.amazon.de/gp/product/B09NDNPF91)| 9,99€*
+Perf Board | Lochplatine KitsDoppelseitig| [amazon](https://www.amazon.de/gp/product/B09NDNPF91)| 9,99€*
 Funkfernbedienung| Programmierbare Funkfernbedienung 433Mhz| [aliexpress](https://de.aliexpress.com/item/1005006065464456.html)| 3,09€
 Schrauben Lenkerklemme|2 Blechschrauben 3,5 x 19 Linsenkopf | [Baumarkt Bauhaus](https://www.bauhaus.info/blech-metall-spenglerschrauben/marinetech-blechschraube/p/23672451)| 0,42€
 Schrauben RC-Platte|2 Blechschrauben 3,5 x 13 Linsenkopf | [Baumarkt Bauhaus](https://www.bauhaus.info/blech-metall-spenglerschrauben/marinetech-blechschraube/p/23672442)| 0,36€
