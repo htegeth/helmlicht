@@ -21,6 +21,7 @@
 #define NUM_LEDS 23
 #define DATA_PIN 4
 
+
 // Anzhal der zulässigen maxmialmodes
 #define MAX_MODES 4
 
@@ -52,17 +53,11 @@ BlinkMuster blinker = BlinkMuster();
 static int8_t mode = 0;
 static unsigned long lastTaste3Pressed=0;
 
-void beep(unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds)
-{
-  int x;
-  long delayAmount = (long)(1000000 / frequencyInHertz);
-  long loopTime = (long)((timeInMilliseconds * 1000) / (delayAmount * 2));
-  for (x = 0; x < loopTime; x++)
-  {
-    digitalWrite(speakerPin, HIGH);
-    delayMicroseconds(delayAmount);
-    digitalWrite(speakerPin, LOW);
-    delayMicroseconds(delayAmount);
+void startupSound(){
+  unsigned int startfreq=500;
+  for (int8_t i=0;i<5;i++){
+    tone(TONE_PIN, startfreq+=500, 100);      
+    delay(100);
   }
 }
 
@@ -80,6 +75,7 @@ void setup()
   mySwitch.enableReceive(0);
   sei();
   mode=EEPROM.read(0);
+  startupSound();
 }
 
 void blinkControll(int times, int unsigned frequence)
@@ -135,10 +131,10 @@ void loop()
     blinker.setBlinkRight();
     break; 
   case (int)taste3: // nächsten Blinkmode auswählen       
-    if((millis()-lastTaste3Pressed) > 250 ){   
-      tone(TONE_PIN, 200, 50);
+    if((millis()-lastTaste3Pressed) > 250 ){         
       if(++mode>MAX_MODES) mode=0;
       EEPROM.write(0,mode);
+      tone(TONE_PIN, (mode ==0) ? 2000: 200, 50);
       runBacklightAnimation();                                
     }
     lastTaste3Pressed=millis();  

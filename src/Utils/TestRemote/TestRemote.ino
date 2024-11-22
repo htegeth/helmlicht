@@ -17,6 +17,8 @@
 
 #include <RCSwitch.h>
 
+#include <avr/interrupt.h>
+
 RCSwitch mySwitch = RCSwitch();
 
 void setup() {

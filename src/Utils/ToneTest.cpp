@@ -26,6 +26,12 @@ void setup()
 
 void loop()
 {
-    beep(TONE_PIN,200,500);
+    //beep(TONE_PIN,200,500);
+    unsigned int startfreq=500;
+    for (int8_t i=0;i<5;i++){
+      tone(TONE_PIN, startfreq+=500, 100);      
+      delay(100);
+    }
+
     delay(2000);
 }
